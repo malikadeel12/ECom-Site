@@ -37,8 +37,8 @@ export default function Home() {
   const lsY = useTransform(lsProgress, [0, 1], ["-12%", "12%"]);
 
   useEffect(() => {
-    fetchProducts({ featured: true }).then(setFeatured).catch(() => {});
-    fetchProducts({ bestseller: true }).then(setBestsellers).catch(() => {});
+    fetchProducts({ featured: true }).then((data) => setFeatured(Array.isArray(data) ? data : [])).catch(() => setFeatured([]));
+    fetchProducts({ bestseller: true }).then((data) => setBestsellers(Array.isArray(data) ? data : [])).catch(() => setBestsellers([]));
   }, []);
 
   return (

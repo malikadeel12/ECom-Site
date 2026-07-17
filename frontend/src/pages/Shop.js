@@ -20,8 +20,8 @@ export default function Shop() {
   const active = params.get("category") || "All";
 
   useEffect(() => {
-    fetchProducts().then(setProducts).catch(() => {});
-    fetchCategories().then(setCategories).catch(() => {});
+    fetchProducts().then((data) => setProducts(Array.isArray(data) ? data : [])).catch(() => setProducts([]));
+    fetchCategories().then((data) => setCategories(Array.isArray(data) ? data : [])).catch(() => setCategories([]));
   }, []);
 
   const filtered = useMemo(() => {
@@ -49,7 +49,7 @@ export default function Shop() {
       <div className="sticky top-[76px] z-30 border-b border-[#DAD8D2] bg-[#F8F6F2]/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-[1500px] flex-wrap items-center justify-between gap-4 px-6 py-4 md:px-12">
           <nav className="flex flex-wrap gap-x-7 gap-y-2" aria-label="Category filter">
-            {["All", ...categories].map((c) => (
+            {(Array.isArray(categories) ? ["All", ...categories] : ["All"]).map((c) => (
               <button
                 key={c}
                 data-testid={`category-filter-${c.toLowerCase()}`}
@@ -89,7 +89,7 @@ export default function Shop() {
             {filtered.length} {filtered.length === 1 ? "object" : "objects"}
           </motion.p>
           <div className="mt-10 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((p, i) => (
+            {(Array.isArray(filtered) ? filtered : []).map((p, i) => (
               <div key={p.slug} className={i % 3 === 1 ? "lg:mt-16" : ""}>
                 <ProductCard product={p} index={i} />
               </div>
