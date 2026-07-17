@@ -25,10 +25,10 @@ export default function Shop() {
   }, []);
 
   const filtered = useMemo(() => {
-    let list = active === "All" ? [...products] : products.filter((p) => p.category === active);
-    if (sort === "price_asc") list.sort((a, b) => a.price - b.price);
-    if (sort === "price_desc") list.sort((a, b) => b.price - a.price);
-    if (sort === "rating") list.sort((a, b) => b.rating - a.rating);
+    let list = active === "All" ? [...products] : products.filter((p) => (p.category || "") === active);
+    if (sort === "price_asc") list.sort((a, b) => (a.price || 0) - (b.price || 0));
+    if (sort === "price_desc") list.sort((a, b) => (b.price || 0) - (a.price || 0));
+    if (sort === "rating") list.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     return list;
   }, [products, active, sort]);
 

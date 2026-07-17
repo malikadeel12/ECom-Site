@@ -10,6 +10,8 @@ import { useWishlist } from "../context/WishlistContext";
 import { Reveal, EASE } from "../components/Reveal";
 import { MagneticButton } from "../components/MagneticButton";
 
+const placeholderImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect fill='%23EFECE5' width='400' height='500'/%3E%3C/svg%3E";
+
 const FAQS = [
   { q: "How does purchasing work?", a: "VARA is a curated affiliate house. 'Acquire' takes you to the partner atelier that crafts and fulfills this piece. Your purchase, warranty and delivery are handled by them — our standards are guaranteed either way." },
   { q: "What is the delivery time?", a: "Most partner ateliers dispatch within 48 hours. European delivery arrives in 2–4 business days; worldwide in 5–9. Every piece ships in protective, plastic-free packaging." },
@@ -53,14 +55,22 @@ export default function ProductDetail() {
   const variants = ["Signature", "Noir", "Sand"];
   const saved = has(product.slug);
 
+  const specs = product.specs || [];
+  const reviews = product.reviews || [];
+  const materials = product.materials || "";
+  const story = product.story || "";
+  const tagline = product.tagline || "";
+  const collection = product.collection || "";
+  const category = product.category || "";
+  const description = product.description || "";
+  const price = product.price || 0;
+  const rating = product.rating || 0;
+  const reviewCount = product.review_count || 0;
+  const affiliateUrl = product.affiliate_url || "#";
+
   const onAcquire = () => {
     toast(`Taking you to our partner atelier for ${product.name}…`);
-    window.open(product.affiliate_url, "_blank", "noopener");
-  };
-
-  const onZoomMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setZoom({ active: true, x: ((e.clientX - rect.left) / rect.width) * 100, y: ((e.clientY - rect.top) / rect.height) * 100 });
+    window.open(affiliateUrl, "_blank", "noopener");
   };
 
   return (
@@ -68,7 +78,7 @@ export default function ProductDetail() {
       <div className="mx-auto max-w-[1500px] px-6 md:px-12">
         <nav className="py-6 text-[0.62rem] uppercase tracking-[0.24em] text-[#7A8164]" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-[#121212]">Home</Link> <span className="mx-2">/</span>
-          <Link to={`/shop?category=${product.category}`} className="hover:text-[#121212]">{product.category}</Link> <span className="mx-2">/</span>
+          <Link to={`/shop?category=${category}`} className="hover:text-[#121212]">{category}</Link> <span className="mx-2">/</span>
           <span className="text-[#121212]">{product.name}</span>
         </nav>
 
@@ -84,7 +94,7 @@ export default function ProductDetail() {
               <AnimatePresence mode="wait">
                 <motion.img
                   key={activeImg}
-                  src={product.images[activeImg]}
+                  src={product.images?.[activeImg] || placeholderImg}
                   alt={product.name}
                   initial={{ opacity: 0, scale: 1.03 }}
                   animate={{ opacity: 1, scale: zoom.active ? 1.6 : 1 }}
@@ -101,7 +111,7 @@ export default function ProductDetail() {
               )}
             </div>
             <div className="mt-4 flex gap-4">
-              {product.images.map((img, i) => (
+              {(product.images || []).map((img, i) => (
                 <button
                   key={i}
                   data-testid={`gallery-thumb-${i}`}
@@ -118,23 +128,23 @@ export default function ProductDetail() {
           {/* STICKY INFO */}
           <div className="lg:col-span-5">
             <div className="lg:sticky lg:top-[110px]">
-              <Reveal y={24}>
-                <p className="overline-label">{product.collection} Collection · {product.category}</p>
+<Reveal y={24}>
+                <p className="overline-label">{collection} Collection · {category}</p>
                 <h1 className="font-serif-display mt-4 text-4xl font-light leading-tight tracking-tight sm:text-5xl" data-testid="product-name">
                   {product.name}
                 </h1>
-                <p className="font-serif-display mt-2 text-lg italic text-[#7A8164]">{product.tagline}</p>
+                <p className="font-serif-display mt-2 text-lg italic text-[#7A8164]">{tagline}</p>
 
                 <div className="mt-5 flex items-center gap-4">
-                  <p className="text-2xl font-light" data-testid="product-detail-price">{formatPrice(product.price)}</p>
+                  <p className="text-2xl font-light" data-testid="product-detail-price">{formatPrice(price)}</p>
                   <span className="flex items-center gap-1.5 text-xs text-[#7A8164]">
                     <Star size={12} className="fill-[#C9A66B] text-[#C9A66B]" />
-                    {product.rating} · {product.review_count} reviews
+                    {rating} · {reviewCount} reviews
                   </span>
                 </div>
 
                 <p className="mt-7 max-w-md text-[0.95rem] font-light leading-relaxed text-[#1C1C1C]/80">
-                  {product.description}
+                  {description}
                 </p>
 
                 <div className="mt-9">
@@ -200,7 +210,7 @@ export default function ProductDetail() {
                     </AccordionTrigger>
                     <AccordionContent>
                       <dl className="space-y-3">
-                        {product.specs.map((s) => (
+                        {specs.map((s) => (
                           <div key={s.label} className="flex justify-between text-sm font-light">
                             <dt className="text-[#7A8164]">{s.label}</dt>
                             <dd className="text-[#1C1C1C]">{s.value}</dd>
@@ -214,7 +224,7 @@ export default function ProductDetail() {
                       Materials
                     </AccordionTrigger>
                     <AccordionContent className="text-sm font-light leading-relaxed text-[#1C1C1C]/80">
-                      {product.materials}
+                      {materials}
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -233,11 +243,11 @@ export default function ProductDetail() {
               Behind the {product.name}
             </h2>
             <p className="mt-7 max-w-lg text-base font-light leading-relaxed text-[#1C1C1C]/80">
-              {product.story}
+              {story}
             </p>
           </Reveal>
           <Reveal delay={0.15} className="img-hover-zoom aspect-[4/3] lg:ml-12">
-            <img src={product.images[1] || product.images[0]} alt={`${product.name} in context`} loading="lazy" className="h-full w-full object-cover" />
+            <img src={product.images?.[1] || product.images?.[0] || placeholderImg} alt={`${product.name} in context`} loading="lazy" className="h-full w-full object-cover" />
           </Reveal>
         </div>
       </section>
@@ -251,11 +261,11 @@ export default function ProductDetail() {
               <h2 className="font-serif-display mt-4 text-3xl font-light sm:text-4xl">From those who own it</h2>
             </div>
             <p className="font-serif-display text-6xl font-light">
-              {product.rating}<span className="text-2xl text-[#7A8164]"> / 5</span>
+              {rating}<span className="text-2xl text-[#7A8164]"> / 5</span>
             </p>
           </Reveal>
           <div className="mt-12 grid gap-10 md:grid-cols-3">
-            {product.reviews.map((r, i) => (
+            {reviews.map((r, i) => (
               <Reveal key={r.author} delay={i * 0.1} className="border-t border-[#DAD8D2] pt-8">
                 <div className="flex gap-1 text-[#C9A66B]">
                   {[...Array(r.rating)].map((_, s) => <Star key={s} size={11} className="fill-current" />)}

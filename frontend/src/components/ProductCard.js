@@ -5,9 +5,14 @@ import { useWishlist } from "../context/WishlistContext";
 import { formatPrice } from "../lib/api";
 import { EASE } from "./Reveal";
 
+const placeholderImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect fill='%23EFECE5' width='400' height='500'/%3E%3C/svg%3E";
+
 export const ProductCard = ({ product, index = 0, tall = false }) => {
   const { toggle, has } = useWishlist();
   const saved = has(product.slug);
+  const images = product.images || [];
+  const primaryImg = images[0] || placeholderImg;
+  const hoverImg = images[1] || images[0] || placeholderImg;
 
   return (
     <motion.article
@@ -21,14 +26,14 @@ export const ProductCard = ({ product, index = 0, tall = false }) => {
       <Link to={`/product/${product.slug}`} data-testid={`product-card-link-${product.slug}`} className="block">
         <div className={`relative overflow-hidden bg-[#EFECE5] ${tall ? "aspect-[3/4]" : "aspect-[4/5]"}`}>
           <img
-            src={product.images[0]}
+            src={primaryImg}
             alt={product.name}
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out group-hover:opacity-0"
           />
-          {product.images[1] && (
+          {images[1] && (
             <img
-              src={product.images[1]}
+              src={hoverImg}
               alt={`${product.name} lifestyle`}
               loading="lazy"
               className="absolute inset-0 h-full w-full object-cover opacity-0 scale-105 transition-opacity duration-700 ease-out group-hover:opacity-100"
