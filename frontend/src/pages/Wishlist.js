@@ -11,7 +11,7 @@ export default function Wishlist() {
   const [all, setAll] = useState([]);
 
   useEffect(() => {
-    fetchProducts().then(setAll).catch(() => {});
+    fetchProducts().then((data) => setAll(Array.isArray(data) ? data : [])).catch(() => setAll([]));
   }, []);
 
   const saved = all.filter((p) => items.includes(p.slug));
