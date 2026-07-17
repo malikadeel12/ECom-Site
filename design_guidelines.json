@@ -1,0 +1,222 @@
+{
+  "brand": {
+    "name": "VARA",
+    "philosophy": "VARA represents the intersection of timeless craftsmanship and modern cinematic elegance. It is not just a marketplace; it is an editorial journey. The brand voice is confident, quiet, and sophisticated—never shouting, only whispering luxury.",
+    "tone": [
+      "Minimal",
+      "Luxury",
+      "Editorial",
+      "Cinematic",
+      "Fashion-inspired",
+      "Premium",
+      "Organic",
+      "Confident"
+    ]
+  },
+  "theme": "light",
+  "colors": {
+    "background": {
+      "primary": "#F8F6F2",
+      "secondary": "#F5F2EC",
+      "overlay": "rgba(28, 28, 28, 0.4)"
+    },
+    "text": {
+      "primary": "#121212",
+      "secondary": "#1C1C1C",
+      "muted": "#7A8164"
+    },
+    "accents": {
+      "sand": "#D7C3A5",
+      "gold": "#C9A66B",
+      "olive": "#7A8164",
+      "stone": "#DAD8D2",
+      "forest": "#2D3B34"
+    },
+    "instructions": "NO saturated colors. NO default Tailwind blue/indigo. NO gradients. Use solid colors. The theme is strictly light-mode with high-contrast dark charcoal/black text."
+  },
+  "typography": {
+    "headings": {
+      "family": "Cormorant Garamond, serif",
+      "weights": [
+        "300",
+        "400",
+        "500",
+        "600"
+      ],
+      "styles": "Use font-light or font-normal. tracking-tighter for massive headers. Never use Inter for headings."
+    },
+    "body": {
+      "family": "Manrope, sans-serif",
+      "weights": [
+        "300",
+        "400",
+        "500"
+      ],
+      "styles": "tracking-wide for overlines. Clean, crisp legible body text."
+    },
+    "hierarchy": {
+      "h1": "text-5xl sm:text-6xl md:text-7xl lg:text-[6rem] leading-none tracking-tighter",
+      "h2": "text-4xl sm:text-5xl lg:text-6xl leading-tight tracking-tight",
+      "h3": "text-2xl sm:text-3xl lg:text-4xl",
+      "body": "text-base lg:text-lg leading-relaxed text-[#1C1C1C]",
+      "overline": "text-xs sm:text-sm uppercase tracking-[0.2em] font-semibold text-[#7A8164]"
+    }
+  },
+  "spacing_and_layout": {
+    "grid_system": "Bento Grid Protocol with high asymmetry. Never fill 100% of the grid perfectly. Use generous gaps (gap-8 to gap-16).",
+    "section_padding": "py-24 md:py-32 lg:py-40",
+    "container": "max-w-[1400px] mx-auto px-6 md:px-12",
+    "borders": "1px solid #DAD8D2",
+    "instructions": "Huge white space. Let the photography and typography breathe. Do NOT use Bootstrap-style 12-column equal grids. Optical alignment over mathematical alignment. Stagger items."
+  },
+  "motion": {
+    "libraries": [
+      "framer-motion",
+      "lucide-react",
+      "lenis"
+    ],
+    "scroll": "MUST use 'lenis' for smooth scrolling to provide an Apple-like cinematic feel.",
+    "effects": {
+      "parallax": "Use Framer Motion's useScroll to create subtle y-axis parallax on large images.",
+      "reveal": "Mask reveal on scroll for typography. Elements should slide up gently with low opacity fading to 1.",
+      "hover": "Image zoom on hover (scale-105) within overflow-hidden containers. Soft lift (-translate-y-1) for product cards.",
+      "magnetic": "Implement a magnetic pull effect on primary CTA buttons if possible, otherwise slow ease-out transitions."
+    },
+    "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "duration": "0.6s to 1.2s for layout transitions"
+  },
+  "components": {
+    "header": {
+      "style": "Transparent initially, turns solid (#F8F6F2) on scroll with backdrop-blur. Must contain Brand Name center, Links left/right, and icons (search, wishlist). NO transparent dropdowns.",
+      "data_testid": "main-header"
+    },
+    "hero": {
+      "style": "Immersive full-screen (min-h-screen). Massive serif typography. High-end lifestyle photography as background or side-by-side asymmetrical layout. Elegant CTA."
+    },
+    "product_card": {
+      "style": "Cardless layout. Just the image container, then text below. Hover image swap (show secondary image on hover). Quick view button appears on hover. Price hierarchy: brand name small, product name serif, price sans-serif.",
+      "data_testid": "product-card"
+    },
+    "buttons": {
+      "primary": "bg-[#121212] text-[#F8F6F2] hover:bg-[#2D3B34] transition-colors duration-300 rounded-none px-8 py-4 text-sm tracking-[0.1em] uppercase",
+      "secondary": "bg-transparent text-[#121212] border border-[#121212] hover:bg-[#F5F2EC] transition-colors duration-300 rounded-none px-8 py-4 text-sm tracking-[0.1em] uppercase"
+    },
+    "footer": {
+      "style": "Editorial, large typography. Massive 'VARA' text at the bottom. Newsletter signup inline. Minimal social links.",
+      "data_testid": "main-footer"
+    }
+  },
+  "pages": {
+    "home": "Hero, Featured Collection (asymmetrical), Brand Story (text heavy, large serif, overlapping image), Best Sellers (carousel or stagger grid), Lifestyle showcase (parallax full width), Testimonials, Instagram gallery, Newsletter.",
+    "product_detail": "Split layout. Left: large sticky image gallery or continuous scroll. Right: Sticky product info, variant selection (minimal circles/boxes), 'Buy Now' affiliate button, accordion for specs/shipping.",
+    "catalog": "Minimal filters sidebar or top bar. 3 or 4 column grid with generous gaps.",
+    "about": "Magazine storytelling. Alternating left/right image and text. Large pull quotes. Timeline of craftsmanship.",
+    "contact": "Minimalist form. No standard inputs; use border-b only for inputs. Editorial store location image."
+  },
+  "images": {
+    "lifestyle": [
+      {
+        "url": "https://images.unsplash.com/photo-1682184805271-11671b7ecf4c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTV8MHwxfHNlYXJjaHwyfHxtaW5pbWFsaXN0JTIwYXJjaGl0ZWN0dXJlJTIwbHV4dXJ5JTIwaW50ZXJpb3J8ZW58MHx8fHwxNzg0MjQ5MDUyfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Minimalist luxury interior"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1569605187723-fcd3c14aef05?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwzfHxmYXNoaW9uJTIwbGlmZXN0eWxlJTIwbHV4dXJ5fGVufDB8fHx8MTc4NDI0OTAzM3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Luxury fashion lifestyle street"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1589363460779-cd717d2ed8fa?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwyfHxmYXNoaW9uJTIwbGlmZXN0eWxlJTIwbHV4dXJ5fGVufDB8fHx8MTc4NDI0OTAzM3ww&ixlib=rb-4.1.0&q=85",
+        "description": "Black sling bag lifestyle"
+      }
+    ],
+    "watches": [
+      {
+        "url": "https://images.unsplash.com/photo-1526648856597-c2b6745ad7bd?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjB3YXRjaCUyMGNpbmVtYXRpY3xlbnwwfHx8fDE3ODQyNDkwMzJ8MA&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Chronograph I"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1676701497146-c11ddfe7c0c5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjB3YXRjaCUyMGNpbmVtYXRpY3xlbnwwfHx8fDE3ODQyNDkwMzJ8MA&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Classic Timepiece"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1689287428096-7e1dcc705a5c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjB3YXRjaCUyMGNpbmVtYXRpY3xlbnwwfHx8fDE3ODQyNDkwMzJ8MA&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Eclipse Watch"
+      }
+    ],
+    "sunglasses": [
+      {
+        "url": "https://images.unsplash.com/photo-1664076423411-e570cfdfcbed?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1OTV8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjBzdW5nbGFzc2VzJTIwZWRpdG9yaWFsfGVufDB8fHx8MTc4NDI0OTAzM3ww&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Obsidian Shades"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1710407625705-fe00b2ecf9e7?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA0MTJ8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBzdW5nbGFzc2VzJTIwbWluaW1hbCUyMHdoaXRlJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODQyNDkwNTF8MA&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Minimalist Eyewear"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1630659115266-26d2ce96ed6e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA0MTJ8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjBzdW5nbGFzc2VzJTIwbWluaW1hbCUyMHdoaXRlJTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3ODQyNDkwNTF8MA&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Aviator Gold"
+      }
+    ],
+    "bags": [
+      {
+        "url": "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA3MDR8MHwxfHNlYXJjaHw0fHxsZWF0aGVyJTIwaGFuZGJhZyUyMG1pbmltYWx8ZW58MHx8fHwxNzg0MjQ5MDMzfDA&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Azure Leather Bag"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1705909237050-7a7625b47fac?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA3MDR8MHwxfHNlYXJjaHwxfHxsZWF0aGVyJTIwaGFuZGJhZyUyMG1pbmltYWx8ZW58MHx8fHwxNzg0MjQ5MDMzfDA&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Noir Tote"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1620109176813-e91290f6c795?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1Mjh8MHwxfHNlYXJjaHwzfHxsdXh1cnklMjBsZWF0aGVyJTIwd2FsbGV0JTIwbWluaW1hbHxlbnwwfHx8fDE3ODQyNDkwNTJ8MA&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Leather Bifold"
+      }
+    ],
+    "jewelry": [
+      {
+        "url": "https://images.unsplash.com/photo-1623279743107-152e86999257?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA4Mzl8MHwxfHNlYXJjaHwzfHxnb2xkJTIwamV3ZWxyeSUyMG1pbmltYWxpc3R8ZW58MHx8fHwxNzg0MjQ5MDMzfDA&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Gold Hoops"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1767391255584-763f98ced9d0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA4Mzl8MHwxfHNlYXJjaHw0fHxnb2xkJTIwamV3ZWxyeSUyMG1pbmltYWxpc3R8ZW58MHx8fHwxNzg0MjQ5MDMzfDA&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Chain Necklace"
+      }
+    ],
+    "tech": [
+      {
+        "url": "https://images.unsplash.com/photo-1545639599-e049a5b6478a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2ODh8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjB0ZWNoJTIwYWNjZXNzb3JpZXMlMjBtaW5pbWFsfGVufDB8fHx8MTc4NDI0OTA1Mnww&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Tech Folio"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1522591599907-d8bd97c4c948?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2ODh8MHwxfHNlYXJjaHw0fHxsdXh1cnklMjB0ZWNoJTIwYWNjZXNzb3JpZXMlMjBtaW5pbWFsfGVufDB8fHx8MTc4NDI0OTA1Mnww&ixlib=rb-4.1.0&q=85",
+        "name": "VARA Phone Sleeve"
+      }
+    ]
+  },
+  "accessibility": {
+    "aria_labels": "Ensure all buttons, image swaps, and interactive elements have aria-labels.",
+    "contrast": "Always verify APCA contrast. Use text-[#121212] on #F8F6F2 backgrounds.",
+    "data_testid": "MANDATORY: Add data-testid to all interactive and key informational elements."
+  },
+  "instructions_to_main_agent": [
+    "Install `lucide-react`, `framer-motion`, `lenis` for smooth Apple-like scroll.",
+    "Do NOT create a generic Shopify-like layout. Rely heavily on white space, asymmetry, and massive serif typography.",
+    "Do NOT use typical card borders for products. Product grids should feel like an editorial magazine spread.",
+    "Create 16 premium demo products spread across the categories defined in the images section.",
+    "Use affiliate logic: Instead of a traditional cart checkout, use a 'Shop Now' / 'Buy Now' button on the product page that acts as an external redirect (can just log or alert for demo).",
+    "All components must be custom built with Tailwind, avoiding generic Shadcn card layouts for the storefront. Shadcn can be used for forms/accordions but MUST be stripped of the default Vercel-look.",
+    "Ensure `data-testid` attributes are added across the application.",
+    "Make sure to design the mobile experience specifically—do NOT just stack columns. Redesign layouts for touch (horizontal scroll snapping, full-screen mobile menu).",
+    "Ensure the hero image is completely uninhibited. Use minimal overlays. Typography should provide contrast naturally or with subtle text-shadow.",
+    "Use `.js` files, not `.tsx`."
+  ],
+  "universal_guidelines_for_main_agent": [
+    "Avoid generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "You MUST NOT apply universal transition. Eg: `transition: all`.",
+    "You MUST NOT center align the app container, ie do not add `.App { text-align: center; }` in the css file.",
+    "NEVER: use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯 etc for icons.",
+    "Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations.",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "Never use placeholder URLs (via.placeholder.com, etc.). Only use the images provided in this JSON.",
+    "Ensure proper semantic HTML structure (header, main, section, article, footer)."
+  ]
+}
