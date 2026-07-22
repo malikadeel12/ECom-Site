@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { fetchProducts } from "../lib/api";
+import { getHomeFeatured, getHomeBestsellers } from "../lib/homeShowcase";
 import { ProductCard } from "../components/ProductCard";
 import { Reveal, MaskReveal, EASE } from "../components/Reveal";
 
@@ -26,8 +26,8 @@ const GALLERY = [
 ];
 
 export default function Home() {
-  const [featured, setFeatured] = useState([]);
-  const [bestsellers, setBestsellers] = useState([]);
+  const featured = getHomeFeatured();
+  const bestsellers = getHomeBestsellers();
   const heroRef = useRef(null);
   const lifestyleRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -35,11 +35,6 @@ export default function Home() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
   const { scrollYProgress: lsProgress } = useScroll({ target: lifestyleRef, offset: ["start end", "end start"] });
   const lsY = useTransform(lsProgress, [0, 1], ["-12%", "12%"]);
-
-  useEffect(() => {
-    fetchProducts({ featured: true }).then((data) => setFeatured(Array.isArray(data) ? data : [])).catch(() => setFeatured([]));
-    fetchProducts({ bestseller: true }).then((data) => setBestsellers(Array.isArray(data) ? data : [])).catch(() => setBestsellers([]));
-  }, []);
 
   return (
     <div data-testid="home-page">
