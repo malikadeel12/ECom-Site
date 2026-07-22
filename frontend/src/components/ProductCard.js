@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Heart, Star } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useWishlist } from "../context/WishlistContext";
 import { formatPrice } from "../lib/api";
 import { EASE } from "./Reveal";
@@ -23,7 +22,13 @@ export const ProductCard = ({ product, index = 0, tall = false }) => {
       transition={{ duration: 0.9, delay: (index % 4) * 0.1, ease: EASE }}
       className="group relative"
     >
-      <Link to={`/product/${product.slug}`} data-testid={`product-card-link-${product.slug}`} className="block">
+      <a
+        href={product.affiliate_url || `/product/${product.slug}`}
+        target={product.affiliate_url ? "_blank" : undefined}
+        rel={product.affiliate_url ? "nofollow sponsored noopener noreferrer" : undefined}
+        data-testid={`product-card-link-${product.slug}`}
+        className="block"
+      >
         <div className={`relative overflow-hidden bg-[#EFECE5] ${tall ? "aspect-[3/4]" : "aspect-[4/5]"}`}>
           <img
             src={primaryImg}
@@ -46,11 +51,11 @@ export const ProductCard = ({ product, index = 0, tall = false }) => {
           )}
           <span className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-5 opacity-0 translate-y-3 transition-opacity duration-500 group-hover:opacity-100 group-hover:translate-y-0" style={{ transitionProperty: "opacity, transform" }}>
             <span className="bg-[#121212] px-6 py-3 text-[0.62rem] uppercase tracking-[0.24em] text-[#F8F6F2]">
-              Discover
+              View product
             </span>
           </span>
         </div>
-      </Link>
+      </a>
 
       <button
         data-testid={`wishlist-toggle-${product.slug}`}
@@ -78,9 +83,7 @@ export const ProductCard = ({ product, index = 0, tall = false }) => {
           <p className="text-sm font-medium text-[#121212]" data-testid={`product-price-${product.slug}`}>
             {formatPrice(product.price)}
           </p>
-          <p className="mt-1 flex items-center justify-end gap-1 text-[0.65rem] text-[#7A8164]">
-            <Star size={10} className="fill-[#C9A66B] text-[#C9A66B]" /> {product.rating}
-          </p>
+          <p className="mt-1 text-[0.65rem] text-[#7A8164]">View details</p>
         </div>
       </div>
     </motion.article>

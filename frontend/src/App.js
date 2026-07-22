@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Lenis from "lenis";
 import { Toaster } from "sonner";
 import { WishlistProvider } from "./context/WishlistContext";
+import { AdminAuthProvider } from "./context/AdminAuthContext";
 import { Header } from "./components/layout/Header";
 import { Footer } from "./components/layout/Footer";
 import Home from "./pages/Home";
@@ -12,6 +13,7 @@ import ProductDetail from "./pages/ProductDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Wishlist from "./pages/Wishlist";
+import { AdminLogin, AdminDashboard } from "./pages/Admin";
 
 const ScrollManager = () => {
   const { pathname } = useLocation();
@@ -35,21 +37,25 @@ function App() {
   return (
     <div className="App">
       <WishlistProvider>
-        <BrowserRouter>
-          <ScrollManager />
-          <Header />
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/product/:slug" element={<ProductDetail />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-            </Routes>
-          </main>
-          <Footer />
-        </BrowserRouter>
+        <AdminAuthProvider>
+          <BrowserRouter>
+            <ScrollManager />
+            <Header />
+            <main>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/product/:slug" element={<ProductDetail />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/admin" element={<AdminLogin />} />
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              </Routes>
+            </main>
+            <Footer />
+          </BrowserRouter>
+        </AdminAuthProvider>
         <Toaster position="bottom-center" toastOptions={{ style: { background: "#121212", color: "#F8F6F2", border: "none", borderRadius: 0, fontSize: "0.8rem", letterSpacing: "0.04em" } }} />
       </WishlistProvider>
     </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Heart, Minus, Plus, Star, Truck, RotateCcw, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Heart, Minus, Plus, Truck, RotateCcw, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { fetchProduct, fetchRelated, fetchProducts, formatPrice } from "../lib/api";
@@ -13,10 +13,10 @@ import { MagneticButton } from "../components/MagneticButton";
 const placeholderImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect fill='%23EFECE5' width='400' height='500'/%3E%3C/svg%3E";
 
 const FAQS = [
-  { q: "How does purchasing work?", a: "VARA is a curated affiliate house. 'Acquire' takes you to the partner atelier that crafts and fulfills this piece. Your purchase, warranty and delivery are handled by them — our standards are guaranteed either way." },
-  { q: "What is the delivery time?", a: "Most partner ateliers dispatch within 48 hours. European delivery arrives in 2–4 business days; worldwide in 5–9. Every piece ships in protective, plastic-free packaging." },
-  { q: "Can I return it?", a: "Yes — 30 days, no questions, through the partner atelier. Items must be unworn with original packaging. Personalised pieces are final sale." },
-  { q: "Is there a warranty?", a: "Every object in the edit carries at least a 2-year warranty; watches carry 5 years and our bridle-leather wallets are guaranteed for life." },
+  { q: "How does purchasing work?", a: "Select 'Visit seller' to open the external marketplace. Payment and order processing take place on that platform." },
+  { q: "What is the delivery time?", a: "Delivery estimates are set by the external seller or marketplace. Check the seller's listing for current shipping information." },
+  { q: "Can I return it?", a: "Returns and refunds are managed by the external seller or marketplace according to its own policies." },
+  { q: "Is there a warranty?", a: "Any warranty is provided by the product manufacturer, seller, or marketplace. Review the external listing before purchasing." },
 ];
 
 export default function ProductDetail() {
@@ -56,21 +56,21 @@ export default function ProductDetail() {
   const saved = has(product.slug);
 
   const specs = product.specs || [];
-  const reviews = product.reviews || [];
   const materials = product.materials || "";
-  const story = product.story || "";
   const tagline = product.tagline || "";
   const collection = product.collection || "";
   const category = product.category || "";
-  const description = product.description || "";
+  const description = "A selected product available from an external seller. Visit the marketplace listing for current product details before making a purchase.";
   const price = product.price || 0;
-  const rating = product.rating || 0;
-  const reviewCount = product.review_count || 0;
   const affiliateUrl = product.affiliate_url || "#";
 
   const onAcquire = () => {
-    toast(`Taking you to our partner atelier for ${product.name}…`);
-    window.open(affiliateUrl, "_blank", "noopener");
+    toast(`Opening the external seller for ${product.name}…`);
+    const link = document.createElement("a");
+    link.href = affiliateUrl;
+    link.target = "_blank";
+    link.rel = "nofollow sponsored noopener noreferrer";
+    link.click();
   };
 
   return (
@@ -129,7 +129,7 @@ export default function ProductDetail() {
           <div className="lg:col-span-5">
             <div className="lg:sticky lg:top-[110px]">
 <Reveal y={24}>
-                <p className="overline-label">{collection} Collection · {category}</p>
+                <p className="overline-label">{collection} · {category}</p>
                 <h1 className="font-serif-display mt-4 text-4xl font-light leading-tight tracking-tight sm:text-5xl" data-testid="product-name">
                   {product.name}
                 </h1>
@@ -137,10 +137,7 @@ export default function ProductDetail() {
 
                 <div className="mt-5 flex items-center gap-4">
                   <p className="text-2xl font-light" data-testid="product-detail-price">{formatPrice(price)}</p>
-                  <span className="flex items-center gap-1.5 text-xs text-[#7A8164]">
-                    <Star size={12} className="fill-[#C9A66B] text-[#C9A66B]" />
-                    {rating} · {reviewCount} reviews
-                  </span>
+                  <span className="text-xs text-[#7A8164]">Current details on seller website</span>
                 </div>
 
                 <p className="mt-7 max-w-md text-[0.95rem] font-light leading-relaxed text-[#1C1C1C]/80">
@@ -178,7 +175,7 @@ export default function ProductDetail() {
                     </button>
                   </div>
                   <MagneticButton data-testid="acquire-button" onClick={onAcquire} className="btn-primary flex-1">
-                    Acquire <ArrowUpRight size={14} strokeWidth={1.5} />
+                  Visit seller <ArrowUpRight size={14} strokeWidth={1.5} />
                   </MagneticButton>
                   <button
                     data-testid="detail-wishlist-button"
@@ -190,11 +187,11 @@ export default function ProductDetail() {
                   </button>
                 </div>
                 <p className="mt-3 text-[0.62rem] uppercase tracking-[0.2em] text-[#7A8164]">
-                  Fulfilled by our partner atelier — opens in a new tab
+                  Opens the external seller or marketplace in a new tab
                 </p>
 
                 <div className="mt-9 grid grid-cols-3 gap-px border border-[#DAD8D2] bg-[#DAD8D2]">
-                  {[{ Icon: Truck, t: "Free shipping", d: "Over $150" }, { Icon: RotateCcw, t: "30-day returns", d: "No questions" }, { Icon: ShieldCheck, t: "Warranty", d: "2–5 years" }].map(({ Icon, t, d }) => (
+                  {[{ Icon: Truck, t: "Shipping", d: "Seller managed" }, { Icon: RotateCcw, t: "Returns", d: "Seller policy" }, { Icon: ShieldCheck, t: "Payment", d: "External platform" }].map(({ Icon, t, d }) => (
                     <div key={t} className="bg-[#F8F6F2] p-4 text-center">
                       <Icon size={16} strokeWidth={1.25} className="mx-auto text-[#7A8164]" />
                       <p className="mt-2 text-[0.6rem] uppercase tracking-[0.14em] font-semibold">{t}</p>
@@ -234,48 +231,21 @@ export default function ProductDetail() {
         </div>
       </div>
 
-      {/* STORY */}
+      {/* PRODUCT INFORMATION */}
       <section className="bg-[#F5F2EC] py-24 md:py-32" aria-label="Product story">
         <div className="mx-auto grid max-w-[1500px] items-center gap-12 px-6 md:px-12 lg:grid-cols-2">
           <Reveal>
-            <p className="overline-label">The story</p>
+            <p className="overline-label">Product information</p>
             <h2 className="font-serif-display mt-5 text-3xl font-light leading-tight sm:text-4xl lg:text-5xl">
-              Behind the {product.name}
+              About the {product.name}
             </h2>
             <p className="mt-7 max-w-lg text-base font-light leading-relaxed text-[#1C1C1C]/80">
-              {story}
+              Product details are provided for discovery purposes. Visit the external seller for the latest specifications, price, availability, shipping, returns, and warranty information.
             </p>
           </Reveal>
           <Reveal delay={0.15} className="img-hover-zoom aspect-[4/3] lg:ml-12">
             <img src={product.images?.[1] || product.images?.[0] || placeholderImg} alt={`${product.name} in context`} loading="lazy" className="h-full w-full object-cover" />
           </Reveal>
-        </div>
-      </section>
-
-      {/* REVIEWS */}
-      <section className="py-24 md:py-32" aria-label="Reviews">
-        <div className="mx-auto max-w-[1500px] px-6 md:px-12">
-          <Reveal className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <p className="overline-label">Reviews</p>
-              <h2 className="font-serif-display mt-4 text-3xl font-light sm:text-4xl">From those who own it</h2>
-            </div>
-            <p className="font-serif-display text-6xl font-light">
-              {rating}<span className="text-2xl text-[#7A8164]"> / 5</span>
-            </p>
-          </Reveal>
-          <div className="mt-12 grid gap-10 md:grid-cols-3">
-            {reviews.map((r, i) => (
-              <Reveal key={r.author} delay={i * 0.1} className="border-t border-[#DAD8D2] pt-8">
-                <div className="flex gap-1 text-[#C9A66B]">
-                  {[...Array(r.rating)].map((_, s) => <Star key={s} size={11} className="fill-current" />)}
-                </div>
-                <h3 className="font-serif-display mt-4 text-xl font-medium">{r.title}</h3>
-                <p className="mt-3 text-sm font-light leading-relaxed text-[#1C1C1C]/75">{r.text}</p>
-                <p className="mt-5 text-[0.62rem] uppercase tracking-[0.22em] text-[#7A8164] font-semibold">{r.author} · {r.date}</p>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 

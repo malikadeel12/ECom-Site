@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, ArrowUpRight, Star } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { fetchProducts } from "../lib/api";
 import { ProductCard } from "../components/ProductCard";
 import { Reveal, MaskReveal, EASE } from "../components/Reveal";
@@ -11,9 +11,9 @@ const STORY_IMG = "https://images.unsplash.com/photo-1589363460779-cd717d2ed8fa?
 const LIFESTYLE_IMG = "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1920";
 
 const TESTIMONIALS = [
-  { quote: "I stopped buying accessories the way I used to. Now I wait for VARA to release something, and I buy once.", name: "Camille F.", place: "Paris" },
-  { quote: "The Meridian is the first watch I've owned that strangers ask about in a whisper, not a shout.", name: "Julien M.", place: "Geneva" },
-  { quote: "Everything arrives feeling like it was made for you specifically. Because, in a sense, it was.", name: "Charlotte E.", place: "London" },
+  "Finding useful products is much easier when the best options are already organized in one place.",
+  "I discovered several products here that I would not have found through normal marketplace searches.",
+  "A simple and convenient platform for browsing product recommendations across different categories.",
 ];
 
 const GALLERY = [
@@ -57,13 +57,13 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.4, ease: EASE }}
               className="overline-label !text-[#D7C3A5]"
             >
-              Objects of intention — Est. MMXXI
+              Discover quality products
             </motion.p>
             <h1 className="font-serif-display mt-6 text-5xl font-light leading-[0.95] tracking-tight text-[#F8F6F2] sm:text-6xl lg:text-[6.5rem]">
-              <MaskReveal delay={0.5}>Own less.</MaskReveal>
+              <MaskReveal delay={0.5}>Shop Smarter.</MaskReveal>
               <br />
               <MaskReveal delay={0.7}>
-                <em className="font-light">Own better.</em>
+                <em className="font-light">Choose Better.</em>
               </MaskReveal>
             </h1>
             <motion.div
@@ -73,10 +73,10 @@ export default function Home() {
               className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center"
             >
               <Link to="/shop" data-testid="hero-cta-shop" className="btn-light w-fit">
-                Explore the edit <ArrowRight size={14} strokeWidth={1.5} />
+                Explore products <ArrowRight size={14} strokeWidth={1.5} />
               </Link>
               <p className="max-w-xs text-sm font-light leading-relaxed text-[#F8F6F2]/70">
-                Sixteen accessories. Six categories. Zero compromises.
+                Carefully selected products across multiple categories, helping you discover useful options without spending hours searching online.
               </p>
             </motion.div>
           </div>
@@ -93,18 +93,18 @@ export default function Home() {
       </section>
 
       {/* FEATURED COLLECTION — asymmetric editorial */}
-      <section className="py-24 md:py-36" aria-label="Featured collection">
+      <section className="py-24 md:py-36" aria-label="Featured products">
         <div className="mx-auto max-w-[1500px] px-6 md:px-12">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <Reveal>
-              <p className="overline-label">Chapter I — The Edit</p>
+              <p className="overline-label">Featured products</p>
               <h2 className="font-serif-display mt-5 max-w-xl text-4xl font-light leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-                Chosen the way you should buy — <em>rarely</em>.
+                Finding the right product<br />should feel simple.
               </h2>
             </Reveal>
             <Reveal delay={0.2}>
               <Link to="/shop" data-testid="featured-view-all" className="link-underline flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.24em] font-medium">
-                View all sixteen <ArrowUpRight size={14} strokeWidth={1.5} />
+                View all products <ArrowUpRight size={14} strokeWidth={1.5} />
               </Link>
             </Reveal>
           </div>
@@ -133,7 +133,7 @@ export default function Home() {
         <div className="mx-auto grid max-w-[1500px] items-center gap-16 px-6 md:px-12 lg:grid-cols-2 lg:gap-8">
           <Reveal className="relative lg:pr-16">
             <div className="img-hover-zoom aspect-[4/5] max-w-xl">
-              <img src={STORY_IMG} alt="The VARA atelier" loading="lazy" className="h-full w-full object-cover" />
+              <img src={STORY_IMG} alt="Curated product discovery" loading="lazy" className="h-full w-full object-cover" />
             </div>
             <div className="absolute -bottom-8 -right-2 hidden bg-[#121212] px-8 py-7 lg:block">
               <p className="font-serif-display text-4xl font-light text-[#F8F6F2]">11<span className="text-[#C9A66B]">h</span></p>
@@ -142,28 +142,25 @@ export default function Home() {
           </Reveal>
           <div className="lg:pl-8">
             <Reveal>
-              <p className="overline-label">Chapter II — The House</p>
+              <p className="overline-label">About the platform</p>
             </Reveal>
             <Reveal delay={0.1}>
               <h2 className="font-serif-display mt-6 text-4xl font-light leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
-                We don't make collections.<br />
-                <em>We make decisions.</em>
+                We do not sell products.<br />
+                <em>We help you find the right ones.</em>
               </h2>
             </Reveal>
             <Reveal delay={0.2}>
               <p className="mt-8 max-w-md text-base leading-relaxed text-[#1C1C1C]/75">
-                Most brands release hundreds of products and let you do the editing.
-                We think that's our job. Every VARA object survives a year of
-                prototyping, three material rejections, and one final question —
-                would we carry this for a decade?
+                We bring together carefully selected products from trusted online marketplaces so visitors can explore useful options in one place.
               </p>
               <p className="mt-5 max-w-md text-base leading-relaxed text-[#1C1C1C]/75">
-                If the answer hesitates, it never ships.
+                Instead of browsing through thousands of listings, users can discover recommended products across different categories and then visit the official seller or marketplace to complete their purchase.
               </p>
             </Reveal>
             <Reveal delay={0.3}>
               <Link to="/about" data-testid="story-cta-about" className="btn-ghost mt-10">
-                Read our story <ArrowRight size={14} strokeWidth={1.5} />
+                Learn more <ArrowRight size={14} strokeWidth={1.5} />
               </Link>
             </Reveal>
           </div>
@@ -175,9 +172,9 @@ export default function Home() {
         <div className="mx-auto max-w-[1500px] px-6 md:px-12">
           <Reveal className="flex items-end justify-between">
             <div>
-              <p className="overline-label">Chapter III — Most Loved</p>
+              <p className="overline-label">Popular recommendations</p>
               <h2 className="font-serif-display mt-5 text-4xl font-light tracking-tight sm:text-5xl">
-                What keeps selling out
+                Products worth discovering
               </h2>
             </div>
           </Reveal>
@@ -202,9 +199,9 @@ export default function Home() {
         <div className="relative z-10 flex h-full items-center">
           <div className="mx-auto w-full max-w-[1500px] px-6 md:px-12">
             <Reveal>
-              <p className="overline-label !text-[#D7C3A5]">Worn, not stored</p>
+              <p className="overline-label !text-[#D7C3A5]">Discover. Compare. Choose.</p>
               <h2 className="font-serif-display mt-6 max-w-2xl text-4xl font-light leading-tight text-[#F8F6F2] sm:text-5xl lg:text-7xl">
-                Made for the life between appointments.
+                Your next great find<br />starts here.
               </h2>
             </Reveal>
           </div>
@@ -215,17 +212,17 @@ export default function Home() {
       <section className="bg-[#2D3B34] py-24 text-[#F8F6F2] md:py-36" aria-label="Why VARA">
         <div className="mx-auto max-w-[1500px] px-6 md:px-12">
           <Reveal>
-            <p className="overline-label !text-[#D7C3A5]">Chapter IV — The Difference</p>
+            <p className="overline-label !text-[#D7C3A5]">Why use this platform</p>
             <h2 className="font-serif-display mt-5 max-w-2xl text-4xl font-light leading-tight sm:text-5xl">
-              Four reasons people never go back
+              A simpler way to discover products
             </h2>
           </Reveal>
           <div className="mt-16 grid gap-px bg-[#F8F6F2]/10 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { n: "01", t: "One-in, one-out design", d: "A new object enters the edit only when an old one has earned retirement. Sixteen, always." },
-              { n: "02", t: "Materials with provenance", d: "Tuscan vegetable-tanned leather. Japanese titanium. Swiss movements. Named tanneries, named workshops." },
-              { n: "03", t: "Lifetime perspective", d: "Repairs over replacements. Our wallets carry a literal lifetime guarantee — the rest, close to it." },
-              { n: "04", t: "Honest partnership", d: "We are a curated affiliate house. When you buy, our partner ateliers fulfill — and we stand behind every piece." },
+              { n: "01", t: "Carefully Selected", d: "Products are reviewed and selected to help visitors find useful and relevant options more easily." },
+              { n: "02", t: "Multiple Categories", d: "Discover products across electronics, fashion, home, accessories, lifestyle, and other categories." },
+              { n: "03", t: "Trusted Marketplaces", d: "Each product links to an external seller or marketplace where visitors can review the full details and complete their purchase." },
+              { n: "04", t: "Easy to Explore", d: "The website provides a simple and organized way to browse product recommendations without unnecessary searching." },
             ].map((f, i) => (
               <Reveal key={f.n} delay={i * 0.1} className="bg-[#2D3B34] p-10">
                 <p className="font-serif-display text-2xl font-light text-[#C9A66B]">{f.n}</p>
@@ -241,19 +238,13 @@ export default function Home() {
       <section className="py-24 md:py-36" aria-label="Testimonials">
         <div className="mx-auto max-w-[1500px] px-6 md:px-12">
           <Reveal className="text-left">
-            <p className="overline-label">Chapter V — In Their Words</p>
+            <p className="overline-label">What Visitors Can Expect</p>
           </Reveal>
           <div className="mt-14 grid gap-14 lg:grid-cols-3 lg:gap-10">
-            {TESTIMONIALS.map((t, i) => (
-              <Reveal key={t.name} delay={i * 0.12} className={i === 1 ? "lg:mt-20" : i === 2 ? "lg:mt-40" : ""}>
-                <div className="flex gap-1 text-[#C9A66B]">
-                  {[...Array(5)].map((_, s) => <Star key={s} size={12} className="fill-current" />)}
-                </div>
-                <blockquote className="font-serif-display mt-6 text-2xl font-light italic leading-snug text-[#121212] lg:text-3xl">
-                  “{t.quote}”
-                </blockquote>
-                <p className="mt-6 text-[0.68rem] uppercase tracking-[0.24em] text-[#7A8164] font-semibold">
-                  {t.name} — {t.place}
+            {TESTIMONIALS.map((statement, i) => (
+              <Reveal key={statement} delay={i * 0.12} className={i === 1 ? "lg:mt-20" : i === 2 ? "lg:mt-40" : ""}>
+                <p className="font-serif-display mt-6 text-2xl font-light leading-snug text-[#121212] lg:text-3xl">
+                  {statement}
                 </p>
               </Reveal>
             ))}
@@ -265,8 +256,8 @@ export default function Home() {
       <section className="pb-24 md:pb-36" aria-label="Gallery">
         <div className="mx-auto max-w-[1500px] px-6 md:px-12">
           <Reveal className="flex items-end justify-between">
-            <h2 className="font-serif-display text-3xl font-light tracking-tight sm:text-4xl">@vara.atelier</h2>
-            <p className="overline-label">The world, wearing VARA</p>
+            <h2 className="font-serif-display text-3xl font-light tracking-tight sm:text-4xl">Featured finds</h2>
+            <p className="overline-label">Explore more recommendations</p>
           </Reveal>
         </div>
         <div className="mt-12 grid grid-cols-2 gap-2 px-2 md:grid-cols-6">

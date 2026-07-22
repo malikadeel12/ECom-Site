@@ -200,13 +200,13 @@ export const Header = () => {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: EASE }}
               >
-                <p className="overline-label mb-6">Search the collection</p>
+                <p className="overline-label mb-6">Search products</p>
                 <input
                   data-testid="search-input"
                   autoFocus
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Watches, bags, eyewear…"
+                  placeholder="Fashion, electronics, home…"
                   className="input-line font-serif-display text-4xl md:text-5xl font-light"
                 />
               </motion.div>

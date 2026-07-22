@@ -37,10 +37,10 @@ export default function Shop() {
       <section className="border-b border-[#DAD8D2] py-20 md:py-28">
         <div className="mx-auto max-w-[1500px] px-6 md:px-12">
           <Reveal>
-            <p className="overline-label">The complete edit</p>
+            <p className="overline-label">Explore products</p>
             <h1 className="font-serif-display mt-5 text-5xl font-light tracking-tight sm:text-6xl lg:text-7xl">
-              {active === "All" ? "Sixteen objects." : active + "."}
-              <em className="block text-[#7A8164]">Nothing more.</em>
+              {active === "All" ? "Selected products." : active + "."}
+              <em className="block text-[#7A8164]">All in one place.</em>
             </h1>
           </Reveal>
         </div>
@@ -86,7 +86,7 @@ export default function Shop() {
             data-testid="shop-result-count"
             className="text-[0.68rem] uppercase tracking-[0.24em] text-[#7A8164]"
           >
-            {filtered.length} {filtered.length === 1 ? "object" : "objects"}
+            {filtered.length} {filtered.length === 1 ? "product" : "products"}
           </motion.p>
           <div className="mt-10 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
             {(Array.isArray(filtered) ? filtered : []).map((p, i) => (

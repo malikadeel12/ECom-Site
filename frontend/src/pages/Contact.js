@@ -8,10 +8,10 @@ import { Reveal, MaskReveal } from "../components/Reveal";
 import { MagneticButton } from "../components/MagneticButton";
 
 const FAQS = [
-  { q: "Do you have a physical showroom?", a: "Yes — our Lisbon atelier is open by appointment, Tuesday through Saturday. Write to us and we'll arrange a private viewing with coffee that takes itself as seriously as our leather." },
-  { q: "How do affiliate purchases work?", a: "Each 'Acquire' button leads to the partner atelier that crafts the piece. They handle payment, shipping and warranty. We curate, they craft — you win." },
-  { q: "Can I request a repair?", a: "Always. Even out of warranty, we broker repairs with the original workshop at cost. Objects should be mended, not mourned." },
-  { q: "Do you collaborate with workshops?", a: "If you run an atelier that measures its work in decades, we would love to hear from you. Two of our current sixteen began as unsolicited letters." },
+  { q: "Do you sell products directly?", a: "No. VARA is a product discovery platform. Product purchases are completed through the linked external seller or marketplace." },
+  { q: "How do affiliate purchases work?", a: "A product link opens the relevant external seller. The seller or marketplace manages payment, shipping, returns, warranties, and order fulfilment." },
+  { q: "Can you help with an order or return?", a: "Orders and returns are managed by the external platform where the purchase was completed. Please contact that seller or marketplace directly." },
+  { q: "Can sellers suggest products?", a: "Yes. Sellers and partners may contact us with relevant products for consideration, but inclusion is not guaranteed." },
 ];
 
 export default function Contact() {
@@ -67,7 +67,7 @@ export default function Contact() {
                 <div>
                   <label htmlFor="c-subject" className="overline-label">Subject</label>
                   <select id="c-subject" data-testid="contact-subject-select" value={form.subject} onChange={set("subject")} className="input-line mt-2 cursor-pointer">
-                    {["General inquiry", "An order with a partner", "Repairs", "Press", "Atelier partnership"].map((s) => (
+                    {["General inquiry", "Product suggestion", "Affiliate partnership", "Press", "Website feedback"].map((s) => (
                       <option key={s}>{s}</option>
                     ))}
                   </select>
@@ -90,11 +90,11 @@ export default function Contact() {
                 <div className="flex items-start gap-5">
                   <MapPin size={18} strokeWidth={1.25} className="mt-1 text-[#7A8164]" />
                   <div>
-                    <p className="overline-label">The atelier</p>
+                    <p className="overline-label">Online platform</p>
                     <p className="font-serif-display mt-3 text-2xl font-light leading-snug">
-                      Rua das Flores 84, 2º<br />1200-195 Lisboa, Portugal
+                      Product discovery<br />available online
                     </p>
-                    <p className="mt-2 text-sm font-light text-[#7A8164]">Private viewings by appointment</p>
+                    <p className="mt-2 text-sm font-light text-[#7A8164]">No physical showroom or direct product sales</p>
                   </div>
                 </div>
               </Reveal>
@@ -102,11 +102,11 @@ export default function Contact() {
                 <div className="flex items-start gap-5">
                   <Clock size={18} strokeWidth={1.25} className="mt-1 text-[#7A8164]" />
                   <div>
-                    <p className="overline-label">Hours</p>
+                    <p className="overline-label">Response times</p>
                     <dl className="mt-3 space-y-2 text-sm font-light">
-                      <div className="flex gap-10"><dt className="w-32 text-[#7A8164]">Tue — Fri</dt><dd>10:00 — 19:00</dd></div>
-                      <div className="flex gap-10"><dt className="w-32 text-[#7A8164]">Saturday</dt><dd>11:00 — 17:00</dd></div>
-                      <div className="flex gap-10"><dt className="w-32 text-[#7A8164]">Sun — Mon</dt><dd>Closed, resting</dd></div>
+                      <div className="flex gap-10"><dt className="w-32 text-[#7A8164]">Messages</dt><dd>Reviewed regularly</dd></div>
+                      <div className="flex gap-10"><dt className="w-32 text-[#7A8164]">Product orders</dt><dd>Contact the seller</dd></div>
+                      <div className="flex gap-10"><dt className="w-32 text-[#7A8164]">Returns</dt><dd>Seller policy applies</dd></div>
                     </dl>
                   </div>
                 </div>
@@ -116,8 +116,8 @@ export default function Contact() {
                   <Mail size={18} strokeWidth={1.25} className="mt-1 text-[#7A8164]" />
                   <div>
                     <p className="overline-label">Direct</p>
-                    <a href="mailto:letters@vara-atelier.com" className="link-underline mt-3 inline-block font-serif-display text-2xl font-light">
-                      letters@vara-atelier.com
+                    <a href="mailto:hello@vara.com" className="link-underline mt-3 inline-block font-serif-display text-2xl font-light">
+                      hello@vara.com
                     </a>
                     <div className="mt-5 flex gap-5">
                       <a href="/" onClick={(e) => e.preventDefault()} aria-label="Instagram" className="text-[#7A8164] transition-colors duration-300 hover:text-[#121212]"><Instagram size={17} strokeWidth={1.25} /></a>
@@ -136,7 +136,7 @@ export default function Contact() {
         <Reveal y={0}>
           <div className="relative h-[420px] w-full grayscale transition-[filter] duration-700 hover:grayscale-0">
             <iframe
-              title="VARA atelier location"
+              title="VARA platform information"
               src="https://www.openstreetmap.org/export/embed.html?bbox=-9.1520%2C38.7060%2C-9.1360%2C38.7140&layer=mapnik&marker=38.7100%2C-9.1440"
               className="h-full w-full border-0"
               loading="lazy"

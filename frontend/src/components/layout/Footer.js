@@ -15,7 +15,7 @@ export const Footer = () => {
     setBusy(true);
     try {
       await subscribeNewsletter(email);
-      toast("Welcome to the circle. We write rarely, and only when it matters.");
+      toast("Subscribed. We will share occasional product discoveries and updates.");
       setEmail("");
     } catch {
       toast("Something went wrong. Please try again.");
@@ -29,13 +29,12 @@ export const Footer = () => {
       <div className="mx-auto max-w-[1500px] px-6 md:px-12">
         <div className="grid gap-16 border-b border-[#F8F6F2]/10 py-24 lg:grid-cols-2 lg:gap-24">
           <Reveal>
-            <p className="overline-label !text-[#C9A66B]">The Vara Letter</p>
+            <p className="overline-label !text-[#C9A66B]">Product updates</p>
             <h2 className="font-serif-display mt-6 text-4xl font-light leading-tight sm:text-5xl">
-              Few objects.<br />Fewer emails.
+              Useful finds.<br />Occasional emails.
             </h2>
             <p className="mt-6 max-w-md text-sm leading-relaxed text-[#F8F6F2]/60">
-              A short letter, sent occasionally — new pieces, atelier notes, and the
-              stories behind the things we choose to make.
+              Occasional product recommendations, category updates, and useful finds from external marketplaces.
             </p>
           </Reveal>
           <Reveal delay={0.15} className="flex items-end">
@@ -67,8 +66,7 @@ export const Footer = () => {
         <div className="grid gap-12 py-20 md:grid-cols-4">
           <div className="md:col-span-2">
             <p className="max-w-xs text-sm font-light leading-relaxed text-[#F8F6F2]/55">
-              VARA is an edit of accessories made slowly, chosen carefully, and
-              meant to outlive the feed.
+              VARA helps visitors discover selected products and then connects them with the relevant external seller or marketplace.
             </p>
             <div className="mt-8 flex gap-6">
               {[{ Icon: Instagram, label: "Instagram" }, { Icon: Twitter, label: "Twitter" }, { Icon: Youtube, label: "YouTube" }].map(({ Icon, label }) => (
@@ -88,7 +86,7 @@ export const Footer = () => {
           <nav aria-label="Footer shop">
             <p className="overline-label !text-[#F8F6F2]/40">Explore</p>
             <ul className="mt-6 space-y-3.5 text-sm font-light">
-              {[["All objects", "/shop"], ["Watches", "/shop?category=Watches"], ["Bags", "/shop?category=Bags"], ["Jewelry", "/shop?category=Jewelry"], ["Wishlist", "/wishlist"]].map(([label, to]) => (
+              {[["All products", "/shop"], ["Watches", "/shop?category=Watches"], ["Bags", "/shop?category=Bags"], ["Jewelry", "/shop?category=Jewelry"], ["Wishlist", "/wishlist"]].map(([label, to]) => (
                 <li key={label}>
                   <Link to={to} className="link-underline text-[#F8F6F2]/70 hover:text-[#F8F6F2]">{label}</Link>
                 </li>
@@ -96,9 +94,9 @@ export const Footer = () => {
             </ul>
           </nav>
           <nav aria-label="Footer house">
-            <p className="overline-label !text-[#F8F6F2]/40">House</p>
+            <p className="overline-label !text-[#F8F6F2]/40">Information</p>
             <ul className="mt-6 space-y-3.5 text-sm font-light">
-              {[["Our story", "/about"], ["Contact", "/contact"], ["Shipping", "/contact"], ["Privacy", "/contact"], ["Terms", "/contact"]].map(([label, to]) => (
+              {[["About", "/about"], ["How it works", "/about"], ["Contact", "/contact"], ["Privacy", "/contact"], ["Terms", "/contact"]].map(([label, to]) => (
                 <li key={label}>
                   <Link to={to} className="link-underline text-[#F8F6F2]/70 hover:text-[#F8F6F2]">{label}</Link>
                 </li>
@@ -116,8 +114,11 @@ export const Footer = () => {
         </Reveal>
       </div>
       <div className="mx-auto flex max-w-[1500px] flex-col gap-2 px-6 pb-8 text-[0.62rem] uppercase tracking-[0.22em] text-[#F8F6F2]/35 md:flex-row md:items-center md:justify-between md:px-12">
-        <p>© {new Date().getFullYear()} VARA. Objects of intention.</p>
-        <p>Curated affiliate edit — purchases fulfilled by partners.</p>
+        <p>© {new Date().getFullYear()} VARA. Product discovery platform.</p>
+        <p>This website may earn commissions from qualifying purchases made through affiliate links.</p>
+      </div>
+      <div className="mx-auto max-w-[1500px] px-6 pb-8 text-[0.62rem] leading-relaxed tracking-[0.12em] text-[#F8F6F2]/35 md:px-12">
+        Some links on this website are affiliate links. This means we may receive a commission when a visitor makes a qualifying purchase through one of these links, at no additional cost to the customer. Product prices, availability, shipping, returns, and order fulfilment are managed by the relevant third-party seller or marketplace.
       </div>
     </footer>
   );
