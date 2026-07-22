@@ -77,7 +77,7 @@ const AdminDashboard = () => {
 
   const set = (key) => (event) => setForm((current) => ({ ...current, [key]: event.target.value }));
 
-  const addProduct = async (event) => {
+  const handleAddProduct = async (event) => {
     event.preventDefault();
     const price = Number(form.price);
     try {
@@ -153,7 +153,7 @@ const AdminDashboard = () => {
         <section className="lg:col-span-5" aria-labelledby="add-product-heading">
           <p className="overline-label">Add a product</p>
           <h2 id="add-product-heading" className="font-serif-display mt-4 text-3xl font-light">New recommendation</h2>
-          <form onSubmit={addProduct} className="mt-10 space-y-7">
+          <form onSubmit={handleAddProduct} className="mt-10 space-y-7">
             <div><label className="overline-label" htmlFor="product-name">Product name</label><input id="product-name" value={form.name} onChange={set("name")} className="input-line mt-2" required /></div>
             <div><label className="overline-label" htmlFor="product-category">Category</label><select id="product-category" value={form.category} onChange={set("category")} className="input-line mt-2 cursor-pointer">{PRODUCT_CATEGORIES.map((category) => <option key={category}>{category}</option>)}</select></div>
             <div className="grid gap-7 sm:grid-cols-2">
