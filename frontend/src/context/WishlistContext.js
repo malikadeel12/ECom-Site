@@ -5,14 +5,14 @@ const WishlistContext = createContext(null);
 export const WishlistProvider = ({ children }) => {
   const [items, setItems] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem("vara_wishlist")) || [];
+      return JSON.parse(localStorage.getItem("bysmart_wishlist") || localStorage.getItem("vara_wishlist")) || [];
     } catch {
       return [];
     }
   });
 
   useEffect(() => {
-    localStorage.setItem("vara_wishlist", JSON.stringify(items));
+    localStorage.setItem("bysmart_wishlist", JSON.stringify(items));
   }, [items]);
 
   const toggle = (slug) =>

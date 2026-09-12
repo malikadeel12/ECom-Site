@@ -1,13 +1,21 @@
+/**
+ * Change summary
+ * What: Product page now uses the multi-image / video gallery.
+ * Why: Admin can save several photos and videos; they must display with the right shape.
+ * Related: ProductMediaGallery.js, productMedia.js, brand.js
+ */
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Heart, Minus, Plus, Truck, RotateCcw, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { fetchProduct, fetchRelated, fetchProducts, formatPrice } from "../lib/api";
+import { buildProductGallery, getProductImages } from "../lib/productMedia";
+import { SITE_NAME } from "../lib/brand";
 import { ProductCard } from "../components/ProductCard";
+import { ProductMediaGallery } from "../components/ProductMediaGallery";
 import { useWishlist } from "../context/WishlistContext";
-import { Reveal, EASE } from "../components/Reveal";
+import { Reveal } from "../components/Reveal";
 import { MagneticButton } from "../components/MagneticButton";
 
 const placeholderImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect fill='%23EFECE5' width='400' height='500'/%3E%3C/svg%3E";
@@ -22,34 +30,45 @@ const FAQS = [
 export default function ProductDetail() {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
+  const [loaded, setLoaded] = useState(false);
   const [related, setRelated] = useState([]);
   const [recent, setRecent] = useState([]);
-  const [activeImg, setActiveImg] = useState(0);
   const [qty, setQty] = useState(1);
   const [variant, setVariant] = useState(0);
-  const [zoom, setZoom] = useState({ active: false, x: 50, y: 50 });
   const { toggle, has } = useWishlist();
 
   useEffect(() => {
-    setActiveImg(0);
+    setLoaded(false);
     setQty(1);
     setVariant(0);
-    fetchProduct(slug).then(setProduct).catch(() => {});
+    fetchProduct(slug)
+      .then((next) => setProduct(next))
+      .catch(() => setProduct(null))
+      .finally(() => setLoaded(true));
     fetchRelated(slug).then(setRelated).catch(() => {});
     try {
-      const seen = JSON.parse(localStorage.getItem("vara_recent")) || [];
+      const seen = JSON.parse(localStorage.getItem("bysmart_recent") || localStorage.getItem("vara_recent")) || [];
       const others = seen.filter((s) => s !== slug).slice(0, 3);
       if (others.length) {
         fetchProducts().then((all) => setRecent(all.filter((p) => others.includes(p.slug))));
       } else {
         setRecent([]);
       }
-      localStorage.setItem("vara_recent", JSON.stringify([slug, ...others].slice(0, 8)));
+      localStorage.setItem("bysmart_recent", JSON.stringify([slug, ...others].slice(0, 8)));
     } catch {}
   }, [slug]);
 
+  if (!loaded) {
+    return <div className="flex h-screen items-center justify-center"><p className="overline-label animate-pulse">{SITE_NAME}</p></div>;
+  }
+
   if (!product) {
-    return <div className="flex h-screen items-center justify-center"><p className="overline-label animate-pulse">VARA</p></div>;
+    return (
+      <div className="flex h-screen flex-col items-center justify-center gap-6 px-6 text-center">
+        <p className="font-serif-display text-4xl font-light">This product is no longer listed.</p>
+        <Link to="/shop" className="btn-primary">Back to shop</Link>
+      </div>
+    );
   }
 
   const variants = ["Signature", "Noir", "Sand"];
@@ -63,6 +82,8 @@ export default function ProductDetail() {
   const description = "A selected product available from an external seller. Visit the marketplace listing for current product details before making a purchase.";
   const price = product.price || 0;
   const affiliateUrl = product.affiliate_url || "#";
+  const images = getProductImages(product);
+  const gallery = buildProductGallery(product);
 
   const onAcquire = () => {
     toast(`Opening the external seller for ${product.name}…`);
@@ -83,47 +104,7 @@ export default function ProductDetail() {
         </nav>
 
         <div className="grid gap-12 pb-24 lg:grid-cols-12 lg:gap-16">
-          {/* GALLERY */}
-          <div className="lg:col-span-7">
-            <div
-              className="relative aspect-[4/5] cursor-zoom-in overflow-hidden bg-[#EFECE5]"
-              onMouseMove={onZoomMove}
-              onMouseLeave={() => setZoom({ active: false, x: 50, y: 50 })}
-              data-testid="product-main-image"
-            >
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={activeImg}
-                  src={product.images?.[activeImg] || placeholderImg}
-                  alt={product.name}
-                  initial={{ opacity: 0, scale: 1.03 }}
-                  animate={{ opacity: 1, scale: zoom.active ? 1.6 : 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.7, ease: EASE }}
-                  style={zoom.active ? { transformOrigin: `${zoom.x}% ${zoom.y}%` } : {}}
-                  className="h-full w-full object-cover"
-                />
-              </AnimatePresence>
-              {product.badge && (
-                <span className="absolute left-5 top-5 bg-[#F8F6F2] px-3 py-1.5 text-[0.6rem] uppercase tracking-[0.24em] font-semibold">
-                  {product.badge}
-                </span>
-              )}
-            </div>
-            <div className="mt-4 flex gap-4">
-              {(product.images || []).map((img, i) => (
-                <button
-                  key={i}
-                  data-testid={`gallery-thumb-${i}`}
-                  onClick={() => setActiveImg(i)}
-                  aria-label={`View image ${i + 1}`}
-                  className={`img-hover-zoom aspect-[4/5] w-20 overflow-hidden transition-opacity duration-300 ${activeImg === i ? "ring-1 ring-[#121212] ring-offset-2 ring-offset-[#F8F6F2]" : "opacity-60 hover:opacity-100"}`}
-                >
-                  <img src={img} alt="" className="h-full w-full object-cover" />
-                </button>
-              ))}
-            </div>
-          </div>
+          <ProductMediaGallery product={product} gallery={gallery} />
 
           {/* STICKY INFO */}
           <div className="lg:col-span-5">
@@ -244,7 +225,7 @@ export default function ProductDetail() {
             </p>
           </Reveal>
           <Reveal delay={0.15} className="img-hover-zoom aspect-[4/3] lg:ml-12">
-            <img src={product.images?.[1] || product.images?.[0] || placeholderImg} alt={`${product.name} in context`} loading="lazy" className="h-full w-full object-cover" />
+            <img src={images[1] || images[0] || placeholderImg} alt={`${product.name} in context`} loading="lazy" className="h-full w-full object-cover" />
           </Reveal>
         </div>
       </section>

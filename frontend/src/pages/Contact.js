@@ -4,11 +4,12 @@ import { ArrowRight, MapPin, Clock, Mail, Instagram, Twitter } from "lucide-reac
 import { toast } from "sonner";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { submitContact } from "../lib/api";
+import { SITE_EMAIL, SITE_NAME } from "../lib/brand";
 import { Reveal, MaskReveal } from "../components/Reveal";
 import { MagneticButton } from "../components/MagneticButton";
 
 const FAQS = [
-  { q: "Do you sell products directly?", a: "No. VARA is a product discovery platform. Product purchases are completed through the linked external seller or marketplace." },
+  { q: "Do you sell products directly?", a: `No. ${SITE_NAME} is a product discovery platform. Product purchases are completed through the linked external seller or marketplace.` },
   { q: "How do affiliate purchases work?", a: "A product link opens the relevant external seller. The seller or marketplace manages payment, shipping, returns, warranties, and order fulfilment." },
   { q: "Can you help with an order or return?", a: "Orders and returns are managed by the external platform where the purchase was completed. Please contact that seller or marketplace directly." },
   { q: "Can sellers suggest products?", a: "Yes. Sellers and partners may contact us with relevant products for consideration, but inclusion is not guaranteed." },
@@ -116,8 +117,8 @@ export default function Contact() {
                   <Mail size={18} strokeWidth={1.25} className="mt-1 text-[#7A8164]" />
                   <div>
                     <p className="overline-label">Direct</p>
-                    <a href="mailto:hello@vara.com" className="link-underline mt-3 inline-block font-serif-display text-2xl font-light">
-                      hello@vara.com
+                    <a href={`mailto:${SITE_EMAIL}`} className="link-underline mt-3 inline-block font-serif-display text-2xl font-light">
+                      {SITE_EMAIL}
                     </a>
                     <div className="mt-5 flex gap-5">
                       <a href="/" onClick={(e) => e.preventDefault()} aria-label="Instagram" className="text-[#7A8164] transition-colors duration-300 hover:text-[#121212]"><Instagram size={17} strokeWidth={1.25} /></a>
@@ -136,7 +137,7 @@ export default function Contact() {
         <Reveal y={0}>
           <div className="relative h-[420px] w-full grayscale transition-[filter] duration-700 hover:grayscale-0">
             <iframe
-              title="VARA platform information"
+              title={`${SITE_NAME} platform information`}
               src="https://www.openstreetmap.org/export/embed.html?bbox=-9.1520%2C38.7060%2C-9.1360%2C38.7140&layer=mapnik&marker=38.7100%2C-9.1440"
               className="h-full w-full border-0"
               loading="lazy"

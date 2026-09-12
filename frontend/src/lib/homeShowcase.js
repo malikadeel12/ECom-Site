@@ -11,6 +11,7 @@ export const HOME_SHOWCASE_PRODUCTS = [
       "https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=1200",
       "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1200",
     ],
+    videos: ["https://www.youtube.com/watch?v=aqz-KE-bpKQ"],
     affiliate_url: "https://example.com/meridian",
   },
   {
@@ -25,6 +26,7 @@ export const HOME_SHOWCASE_PRODUCTS = [
       "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1200",
       "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=1200",
     ],
+    videos: ["https://www.youtube.com/watch?v=aqz-KE-bpKQ"],
     affiliate_url: "https://example.com/marlow",
   },
   {

@@ -1,15 +1,29 @@
+/**
+ * Change summary
+ * What: Admin can add many product image URLs and optional video URLs.
+ * Why: The storefront gallery needs more than one photo, plus product videos.
+ * Related: productMedia.js, firestoreApi.js, ProductMediaGallery.js
+ */
+
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { ArrowRight, LogOut, Plus, Trash2 } from "lucide-react";
+import { ArrowRight, LogOut, Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { useAdminAuth } from "../context/AdminAuthContext";
 import { addProduct, deleteProduct, fetchProducts, formatPrice, dataSource } from "../lib/api";
 import { PRODUCT_CATEGORIES, createProductSlug } from "../lib/productStore";
+import { cleanUrlList } from "../lib/productMedia";
 import { Reveal } from "../components/Reveal";
 
 const emptyForm = {
-  name: "", category: PRODUCT_CATEGORIES[0], price: "", affiliateUrl: "",
-  imageUrl: "", description: "", badge: "Featured",
+  name: "",
+  category: PRODUCT_CATEGORIES[0],
+  price: "",
+  affiliateUrl: "",
+  imageUrls: [""],
+  videoUrls: [""],
+  description: "",
+  badge: "Featured",
 };
 
 const AdminLogin = () => {
@@ -77,17 +91,51 @@ const AdminDashboard = () => {
 
   const set = (key) => (event) => setForm((current) => ({ ...current, [key]: event.target.value }));
 
+  const updateList = (key, index, value) => {
+    setForm((current) => {
+      const next = [...current[key]];
+      next[index] = value;
+      return { ...current, [key]: next };
+    });
+  };
+
+  const addListRow = (key) => {
+    setForm((current) => ({ ...current, [key]: [...current[key], ""] }));
+  };
+
+  const removeListRow = (key, index) => {
+    setForm((current) => {
+      const next = current[key].filter((_, itemIndex) => itemIndex !== index);
+      return { ...current, [key]: next.length ? next : [""] };
+    });
+  };
+
   const handleAddProduct = async (event) => {
     event.preventDefault();
     const price = Number(form.price);
+    const images = cleanUrlList(form.imageUrls);
+    const videos = cleanUrlList(form.videoUrls);
+
     try {
       const affiliateUrl = new URL(form.affiliateUrl);
-      const imageUrl = new URL(form.imageUrl);
-      if (!/^https?:$/.test(affiliateUrl.protocol) || !/^https?:$/.test(imageUrl.protocol)) throw new Error();
+      if (!/^https?:$/.test(affiliateUrl.protocol)) throw new Error();
     } catch {
-      toast.error("Use valid http or https URLs for the product and image.");
+      toast.error("Use a valid http or https affiliate link.");
       return;
     }
+
+    if (!images.length) {
+      toast.error("Add at least one valid product image URL.");
+      return;
+    }
+
+    const leftoverImages = form.imageUrls.filter((value) => value.trim() && !cleanUrlList([value]).length);
+    const leftoverVideos = form.videoUrls.filter((value) => value.trim() && !cleanUrlList([value]).length);
+    if (leftoverImages.length || leftoverVideos.length) {
+      toast.error("Every filled image or video row must be a valid http or https URL.");
+      return;
+    }
+
     if (!form.name.trim() || !Number.isFinite(price) || price < 0) {
       toast.error("Enter a product name and a valid price.");
       return;
@@ -103,7 +151,8 @@ const AdminDashboard = () => {
       price,
       badge: form.badge,
       description: form.description.trim() || "A selected product available from an external marketplace.",
-      images: [form.imageUrl.trim()],
+      images,
+      videos,
       affiliate_url: form.affiliateUrl.trim(),
       specs: [],
       materials: "See the external seller listing for current product materials and specifications.",
@@ -161,7 +210,31 @@ const AdminDashboard = () => {
               <div><label className="overline-label" htmlFor="product-badge">Label</label><select id="product-badge" value={form.badge} onChange={set("badge")} className="input-line mt-2 cursor-pointer">{["Featured", "Popular", "Recommended", "Best Value"].map((badge) => <option key={badge}>{badge}</option>)}</select></div>
             </div>
             <div><label className="overline-label" htmlFor="affiliate-url">Affiliate link</label><input id="affiliate-url" type="url" placeholder="https://marketplace.com/product" value={form.affiliateUrl} onChange={set("affiliateUrl")} className="input-line mt-2" required /></div>
-            <div><label className="overline-label" htmlFor="image-url">Product image URL</label><input id="image-url" type="url" placeholder="https://example.com/image.jpg" value={form.imageUrl} onChange={set("imageUrl")} className="input-line mt-2" required /></div>
+
+            <UrlListFields
+              label="Product image URLs"
+              hint="Add every photo you want in the product gallery. At least one is required."
+              idPrefix="image-url"
+              values={form.imageUrls}
+              placeholder="https://example.com/image.jpg"
+              onChange={(index, value) => updateList("imageUrls", index, value)}
+              onAdd={() => addListRow("imageUrls")}
+              onRemove={(index) => removeListRow("imageUrls", index)}
+              addLabel="Add another image"
+            />
+
+            <UrlListFields
+              label="Product video URLs"
+              hint="Optional. YouTube, Vimeo, or a direct .mp4 / .webm link."
+              idPrefix="video-url"
+              values={form.videoUrls}
+              placeholder="https://www.youtube.com/watch?v=..."
+              onChange={(index, value) => updateList("videoUrls", index, value)}
+              onAdd={() => addListRow("videoUrls")}
+              onRemove={(index) => removeListRow("videoUrls", index)}
+              addLabel="Add another video"
+            />
+
             <div><label className="overline-label" htmlFor="product-description">Short description</label><textarea id="product-description" rows={4} value={form.description} onChange={set("description")} className="input-line mt-2 resize-none" /></div>
             <button type="submit" disabled={saving} className="btn-primary w-full">{saving ? "Adding…" : "Add product"} <Plus size={14} /></button>
           </form>
@@ -179,6 +252,9 @@ const AdminDashboard = () => {
                   <p className="truncate font-serif-display text-xl font-medium">{product.name}</p>
                   <p className="mt-1 text-[0.62rem] uppercase tracking-[0.2em] text-[#7A8164]">{product.category}</p>
                   <p className="mt-2 text-sm">{formatPrice(product.price)}</p>
+                  <p className="mt-1 text-[0.62rem] uppercase tracking-[0.16em] text-[#1C1C1C]/50">
+                    {(product.images || []).length} photos · {(product.videos || []).length} videos
+                  </p>
                 </div>
                 <button onClick={() => removeProduct(product)} aria-label={`Delete ${product.name}`} className="flex h-11 w-11 shrink-0 items-center justify-center border border-[#DAD8D2] transition-colors hover:border-red-700 hover:text-red-700"><Trash2 size={16} strokeWidth={1.5} /></button>
               </article>
@@ -189,5 +265,50 @@ const AdminDashboard = () => {
     </div>
   );
 };
+
+const UrlListFields = ({
+  label,
+  hint,
+  idPrefix,
+  values,
+  placeholder,
+  onChange,
+  onAdd,
+  onRemove,
+  addLabel,
+}) => (
+  <div>
+    <p className="overline-label">{label}</p>
+    <p className="mt-2 text-xs font-light leading-relaxed text-[#1C1C1C]/55">{hint}</p>
+    <div className="mt-4 space-y-3">
+      {values.map((value, index) => (
+        <div key={`${idPrefix}-${index}`} className="flex items-end gap-3">
+          <input
+            id={`${idPrefix}-${index}`}
+            type="url"
+            value={value}
+            onChange={(event) => onChange(index, event.target.value)}
+            placeholder={placeholder}
+            className="input-line flex-1"
+            required={idPrefix === "image-url" && index === 0}
+          />
+          {values.length > 1 && (
+            <button
+              type="button"
+              onClick={() => onRemove(index)}
+              aria-label={`Remove ${label} row ${index + 1}`}
+              className="mb-1 flex h-9 w-9 shrink-0 items-center justify-center border border-[#DAD8D2] text-[#1C1C1C]/60 transition-colors hover:border-[#121212] hover:text-[#121212]"
+            >
+              <X size={14} />
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+    <button type="button" onClick={onAdd} className="btn-ghost mt-4">
+      {addLabel} <Plus size={14} />
+    </button>
+  </div>
+);
 
 export { AdminLogin, AdminDashboard };

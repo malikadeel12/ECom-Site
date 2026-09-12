@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, Heart, Menu, X, ArrowRight } from "lucide-react";
 import { useWishlist } from "../../context/WishlistContext";
 import { fetchProducts, formatPrice } from "../../lib/api";
+import { SITE_NAME, SITE_TAGLINE } from "../../lib/brand";
 import { EASE } from "../Reveal";
 
 const NAV = [
@@ -85,12 +86,12 @@ export const Header = () => {
           <Link
             to="/"
             data-testid="header-logo"
-            aria-label="VARA home"
-            className={`absolute left-1/2 -translate-x-1/2 font-serif-display text-[1.7rem] tracking-[0.42em] font-medium pl-2 transition-colors duration-500 ${
+            aria-label={`${SITE_NAME} home`}
+            className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap font-serif-display text-[1.25rem] font-medium tracking-[0.14em] transition-colors duration-500 sm:text-[1.45rem] sm:tracking-[0.18em] ${
               solid ? "text-[#121212]" : "text-[#F8F6F2]"
             }`}
           >
-            VARA
+            {SITE_NAME}
           </Link>
 
           <div className="flex items-center gap-6">
@@ -169,7 +170,7 @@ export const Header = () => {
                 transition={{ delay: 0.6, duration: 0.7 }}
                 className="overline-label mt-10"
               >
-                Objects of intention
+                {SITE_TAGLINE}
               </motion.p>
             </nav>
           </motion.div>

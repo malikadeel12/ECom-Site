@@ -8,9 +8,20 @@ import {
   submitContactToFirestore,
   subscribeNewsletterToFirestore,
 } from "./firestoreApi";
+import { HOME_SHOWCASE_PRODUCTS } from "./homeShowcase";
 
 export const fetchProducts = (params = {}) => fetchProductsFromFirestore(params);
-export const fetchProduct = (slug) => fetchProductFromFirestore(slug);
+
+// Firestore first; homepage samples fill in when a slug is only on the landing page.
+export const fetchProduct = async (slug) => {
+  try {
+    const fromDb = await fetchProductFromFirestore(slug);
+    if (fromDb) return fromDb;
+  } catch {
+    // Missing Firebase config should not hide the homepage sample products.
+  }
+  return HOME_SHOWCASE_PRODUCTS.find((item) => item.slug === slug) || null;
+};
 export const fetchRelated = (slug) => fetchRelatedFromFirestore(slug);
 export const fetchCategories = () => fetchCategoriesFromFirestore();
 export const subscribeNewsletter = (email) => subscribeNewsletterToFirestore(email);

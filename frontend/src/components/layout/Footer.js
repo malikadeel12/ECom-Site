@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Instagram, Twitter, Youtube } from "lucide-react";
 import { toast } from "sonner";
 import { subscribeNewsletter } from "../../lib/api";
+import { SITE_NAME, SITE_NAME_UPPER } from "../../lib/brand";
 import { Reveal } from "../Reveal";
 
 export const Footer = () => {
@@ -66,7 +67,7 @@ export const Footer = () => {
         <div className="grid gap-12 py-20 md:grid-cols-4">
           <div className="md:col-span-2">
             <p className="max-w-xs text-sm font-light leading-relaxed text-[#F8F6F2]/55">
-              VARA helps visitors discover selected products and then connects them with the relevant external seller or marketplace.
+              {SITE_NAME} helps visitors discover selected products and then connects them with the relevant external seller or marketplace.
             </p>
             <div className="mt-8 flex gap-6">
               {[{ Icon: Instagram, label: "Instagram" }, { Icon: Twitter, label: "Twitter" }, { Icon: Youtube, label: "YouTube" }].map(({ Icon, label }) => (
@@ -108,13 +109,13 @@ export const Footer = () => {
 
       <div className="overflow-hidden border-t border-[#F8F6F2]/10">
         <Reveal y={60}>
-          <p className="font-serif-display select-none text-center text-[22vw] font-light leading-[0.85] tracking-[0.1em] text-[#F8F6F2]/[0.07] lg:text-[19vw]" aria-hidden="true">
-            VARA
+          <p className="font-serif-display select-none text-center text-[14vw] font-light leading-[0.85] tracking-[0.08em] text-[#F8F6F2]/[0.07] lg:text-[12vw]" aria-hidden="true">
+            {SITE_NAME_UPPER}
           </p>
         </Reveal>
       </div>
       <div className="mx-auto flex max-w-[1500px] flex-col gap-2 px-6 pb-8 text-[0.62rem] uppercase tracking-[0.22em] text-[#F8F6F2]/35 md:flex-row md:items-center md:justify-between md:px-12">
-        <p>© {new Date().getFullYear()} VARA. Product discovery platform.</p>
+        <p>© {new Date().getFullYear()} {SITE_NAME}. Product discovery platform.</p>
         <p>This website may earn commissions from qualifying purchases made through affiliate links.</p>
       </div>
       <div className="mx-auto max-w-[1500px] px-6 pb-8 text-[0.62rem] leading-relaxed tracking-[0.12em] text-[#F8F6F2]/35 md:px-12">

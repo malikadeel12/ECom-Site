@@ -103,6 +103,8 @@ export const addProductToFirestore = async (product) => {
   const payload = {
     ...product,
     slug,
+    images: Array.isArray(product.images) ? product.images : [],
+    videos: Array.isArray(product.videos) ? product.videos : [],
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
     createdBy: ADMIN_UID,
@@ -141,7 +143,11 @@ export const submitContactToFirestore = async (data) => {
   return { id: ref.id, ...data };
 };
 
-const normalizeProduct = async (product) => ({ ...product });
+const normalizeProduct = async (product) => ({
+  ...product,
+  images: Array.isArray(product.images) ? product.images.filter(Boolean) : [],
+  videos: Array.isArray(product.videos) ? product.videos.filter(Boolean) : [],
+});
 
 export const firestoreHelpers = {
   slugify,

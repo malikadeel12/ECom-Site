@@ -41,7 +41,7 @@ export default function Home() {
       {/* HERO */}
       <section ref={heroRef} className="relative h-screen overflow-hidden bg-[#121212]" aria-label="Hero">
         <motion.div style={{ y: heroY }} className="absolute inset-0">
-          <img src={HERO_IMG} alt="VARA lifestyle editorial" className="h-[115%] w-full object-cover" />
+          <img src={HERO_IMG} alt="BY Smart lifestyle editorial" className="h-[115%] w-full object-cover" />
           <div className="absolute inset-0 bg-[#121212]/35" />
         </motion.div>
         <motion.div style={{ opacity: heroOpacity }} className="relative z-10 flex h-full flex-col justify-end pb-24 md:pb-28">
@@ -188,7 +188,7 @@ export default function Home() {
       {/* LIFESTYLE PARALLAX */}
       <section ref={lifestyleRef} className="relative h-[80vh] overflow-hidden" aria-label="Lifestyle">
         <motion.div style={{ y: lsY }} className="absolute inset-0 -top-[12%] h-[124%]">
-          <img src={LIFESTYLE_IMG} alt="VARA worn in the city" loading="lazy" className="h-full w-full object-cover" />
+          <img src={LIFESTYLE_IMG} alt="BY Smart worn in the city" loading="lazy" className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-[#121212]/30" />
         </motion.div>
         <div className="relative z-10 flex h-full items-center">
@@ -203,8 +203,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* WHY VARA */}
-      <section className="bg-[#2D3B34] py-24 text-[#F8F6F2] md:py-36" aria-label="Why VARA">
+      {/* WHY BY SMART */}
+      <section className="bg-[#2D3B34] py-24 text-[#F8F6F2] md:py-36" aria-label="Why BY Smart">
         <div className="mx-auto max-w-[1500px] px-6 md:px-12">
           <Reveal>
             <p className="overline-label !text-[#D7C3A5]">Why use this platform</p>

@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 import { useWishlist } from "../context/WishlistContext";
 import { formatPrice } from "../lib/api";
+import { getProductImages, getProductVideos } from "../lib/productMedia";
 import { EASE } from "./Reveal";
 
 const placeholderImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'%3E%3Crect fill='%23EFECE5' width='400' height='500'/%3E%3C/svg%3E";
@@ -9,9 +11,11 @@ const placeholderImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/
 export const ProductCard = ({ product, index = 0, tall = false }) => {
   const { toggle, has } = useWishlist();
   const saved = has(product.slug);
-  const images = product.images || [];
+  const images = getProductImages(product);
+  const videos = getProductVideos(product);
   const primaryImg = images[0] || placeholderImg;
   const hoverImg = images[1] || images[0] || placeholderImg;
+  const extraMedia = Math.max(0, images.length + videos.length - 1);
 
   return (
     <motion.article
@@ -22,10 +26,8 @@ export const ProductCard = ({ product, index = 0, tall = false }) => {
       transition={{ duration: 0.9, delay: (index % 4) * 0.1, ease: EASE }}
       className="group relative"
     >
-      <a
-        href={product.affiliate_url || `/product/${product.slug}`}
-        target={product.affiliate_url ? "_blank" : undefined}
-        rel={product.affiliate_url ? "nofollow sponsored noopener noreferrer" : undefined}
+      <Link
+        to={`/product/${product.slug}`}
         data-testid={`product-card-link-${product.slug}`}
         className="block"
       >
@@ -49,13 +51,18 @@ export const ProductCard = ({ product, index = 0, tall = false }) => {
               {product.badge}
             </span>
           )}
+          {extraMedia > 0 && (
+            <span className="absolute bottom-4 right-4 bg-[#121212] px-2.5 py-1 text-[0.58rem] uppercase tracking-[0.18em] text-[#F8F6F2]">
+              +{extraMedia} media
+            </span>
+          )}
           <span className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-5 opacity-0 translate-y-3 transition-opacity duration-500 group-hover:opacity-100 group-hover:translate-y-0" style={{ transitionProperty: "opacity, transform" }}>
             <span className="bg-[#121212] px-6 py-3 text-[0.62rem] uppercase tracking-[0.24em] text-[#F8F6F2]">
               View product
             </span>
           </span>
         </div>
-      </a>
+      </Link>
 
       <button
         data-testid={`wishlist-toggle-${product.slug}`}
