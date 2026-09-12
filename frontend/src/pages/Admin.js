@@ -245,6 +245,9 @@ const AdminDashboard = () => {
             <div><p className="overline-label">Current products</p><h2 id="product-list-heading" className="font-serif-display mt-4 text-3xl font-light">{products.length} products</h2></div>
           </div>
           <div className="mt-10 divide-y divide-[#DAD8D2] border-y border-[#DAD8D2]">
+            {products.length === 0 && (
+              <p className="py-8 text-sm font-light text-[#1C1C1C]/60">No products yet. Add the first recommendation on the left.</p>
+            )}
             {products.map((product) => (
               <article key={product.slug} className="flex items-center gap-5 py-5">
                 <img src={product.images?.[0]} alt="" className="h-24 w-20 shrink-0 bg-[#EFECE5] object-cover" />

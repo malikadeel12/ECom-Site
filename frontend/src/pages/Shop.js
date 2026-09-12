@@ -88,13 +88,23 @@ export default function Shop() {
           >
             {filtered.length} {filtered.length === 1 ? "product" : "products"}
           </motion.p>
-          <div className="mt-10 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-            {(Array.isArray(filtered) ? filtered : []).map((p, i) => (
-              <div key={p.slug} className={i % 3 === 1 ? "lg:mt-16" : ""}>
-                <ProductCard product={p} index={i} />
-              </div>
-            ))}
-          </div>
+          {filtered.length > 0 ? (
+            <div className="mt-10 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+              {(Array.isArray(filtered) ? filtered : []).map((p, i) => (
+                <div key={p.slug} className={i % 3 === 1 ? "lg:mt-16" : ""}>
+                  <ProductCard product={p} index={i} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Reveal className="mt-16 max-w-lg">
+              <p className="font-serif-display text-3xl font-light italic text-[#7A8164]">
+                {active === "All"
+                  ? "No products are listed yet. Check back shortly, or browse the homepage picks."
+                  : `No products in ${active} right now.`}
+              </p>
+            </Reveal>
+          )}
         </div>
       </section>
     </div>

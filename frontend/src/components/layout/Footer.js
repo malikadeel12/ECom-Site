@@ -87,7 +87,7 @@ export const Footer = () => {
           <nav aria-label="Footer shop">
             <p className="overline-label !text-[#F8F6F2]/40">Explore</p>
             <ul className="mt-6 space-y-3.5 text-sm font-light">
-              {[["All products", "/shop"], ["Watches", "/shop?category=Watches"], ["Bags", "/shop?category=Bags"], ["Jewelry", "/shop?category=Jewelry"], ["Wishlist", "/wishlist"]].map(([label, to]) => (
+              {[["All products", "/shop"], ["Watches", "/shop?category=Watches"], ["Bags", "/shop?category=Bags%20%26%20Luggage"], ["Jewelry", "/shop?category=Jewelry%20%26%20Accessories"], ["Wishlist", "/wishlist"]].map(([label, to]) => (
                 <li key={label}>
                   <Link to={to} className="link-underline text-[#F8F6F2]/70 hover:text-[#F8F6F2]">{label}</Link>
                 </li>

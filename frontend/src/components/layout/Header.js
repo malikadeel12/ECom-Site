@@ -1,19 +1,29 @@
 import { useState, useEffect } from "react";
-import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Heart, Menu, X, ArrowRight } from "lucide-react";
 import { useWishlist } from "../../context/WishlistContext";
-import { fetchProducts, formatPrice } from "../../lib/api";
+import { fetchCatalogProducts, formatPrice } from "../../lib/api";
+import { getProductImages } from "../../lib/productMedia";
 import { SITE_NAME, SITE_TAGLINE } from "../../lib/brand";
 import { EASE } from "../Reveal";
 
 const NAV = [
   { label: "Shop", to: "/shop" },
   { label: "Watches", to: "/shop?category=Watches" },
-  { label: "Bags", to: "/shop?category=Bags" },
+  { label: "Bags", to: "/shop?category=Bags%20%26%20Luggage" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
+
+const isNavActive = (to, location) => {
+  const [path, search = ""] = to.split("?");
+  if (location.pathname !== path) return false;
+  if (path !== "/shop") return true;
+  const wanted = new URLSearchParams(search).get("category");
+  const current = new URLSearchParams(location.search).get("category");
+  return wanted ? current === wanted : !current;
+};
 
 export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -39,7 +49,7 @@ export const Header = () => {
   }, [location]);
 
   useEffect(() => {
-    if (searchOpen && all.length === 0) fetchProducts().then(setAll).catch(() => {});
+    if (searchOpen && all.length === 0) fetchCatalogProducts().then(setAll).catch(() => {});
   }, [searchOpen, all.length]);
 
   useEffect(() => {
@@ -61,16 +71,16 @@ export const Header = () => {
         <div className="mx-auto flex h-[76px] max-w-[1500px] items-center justify-between px-6 md:px-12">
           <nav className="hidden lg:flex items-center gap-9" aria-label="Primary">
             {NAV.slice(0, 3).map((n) => (
-              <NavLink
+              <Link
                 key={n.label}
                 to={n.to}
                 data-testid={`nav-link-${n.label.toLowerCase()}`}
                 className={`link-underline text-[0.7rem] uppercase tracking-[0.24em] font-medium transition-colors duration-300 ${
-                  solid || isHome ? (solid ? "text-[#1C1C1C]" : "text-[#F8F6F2]") : "text-[#1C1C1C]"
-                }`}
+                  isNavActive(n.to, location) ? "active " : ""
+                }${solid || isHome ? (solid ? "text-[#1C1C1C]" : "text-[#F8F6F2]") : "text-[#1C1C1C]"}`}
               >
                 {n.label}
-              </NavLink>
+              </Link>
             ))}
           </nav>
 
@@ -97,16 +107,16 @@ export const Header = () => {
           <div className="flex items-center gap-6">
             <nav className="hidden lg:flex items-center gap-9" aria-label="Secondary">
               {NAV.slice(3).map((n) => (
-                <NavLink
+                <Link
                   key={n.label}
                   to={n.to}
                   data-testid={`nav-link-${n.label.toLowerCase()}`}
                   className={`link-underline text-[0.7rem] uppercase tracking-[0.24em] font-medium transition-colors duration-300 ${
-                    solid ? "text-[#1C1C1C]" : "text-[#F8F6F2]"
-                  }`}
+                    isNavActive(n.to, location) ? "active " : ""
+                  }${solid ? "text-[#1C1C1C]" : "text-[#F8F6F2]"}`}
                 >
                   {n.label}
-                </NavLink>
+                </Link>
               ))}
             </nav>
             <button
@@ -225,7 +235,7 @@ export const Header = () => {
                       className="group flex items-center justify-between border-b border-[#DAD8D2] py-5"
                     >
                       <div className="flex items-center gap-5">
-                        <img src={p.images[0]} alt={p.name} className="h-14 w-11 object-cover" />
+                        <img src={getProductImages(p)[0]} alt={p.name} className="h-14 w-11 object-cover" />
                         <div>
                           <p className="font-serif-display text-xl text-[#121212]">{p.name}</p>
                           <p className="text-[0.62rem] uppercase tracking-[0.24em] text-[#7A8164]">{p.category}</p>

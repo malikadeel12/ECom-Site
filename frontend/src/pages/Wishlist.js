@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { fetchProducts } from "../lib/api";
+import { fetchCatalogProducts } from "../lib/api";
 import { ProductCard } from "../components/ProductCard";
 import { useWishlist } from "../context/WishlistContext";
 import { Reveal } from "../components/Reveal";
@@ -9,9 +9,13 @@ import { Reveal } from "../components/Reveal";
 export default function Wishlist() {
   const { items } = useWishlist();
   const [all, setAll] = useState([]);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    fetchProducts().then((data) => setAll(Array.isArray(data) ? data : [])).catch(() => setAll([]));
+    fetchCatalogProducts()
+      .then((data) => setAll(Array.isArray(data) ? data : []))
+      .catch(() => setAll([]))
+      .finally(() => setReady(true));
   }, []);
 
   const saved = all.filter((p) => items.includes(p.slug));
@@ -35,14 +39,18 @@ export default function Wishlist() {
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-[1500px] px-6 md:px-12">
-          {saved.length > 0 ? (
+          {!ready ? (
+            <p className="overline-label">Loading your shortlist…</p>
+          ) : saved.length > 0 ? (
             <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
               {saved.map((p, i) => <ProductCard key={p.slug} product={p} index={i} />)}
             </div>
           ) : (
             <Reveal className="py-16 text-center" data-testid="wishlist-empty-state">
               <p className="font-serif-display text-3xl font-light italic text-[#7A8164]">
-                Nothing saved yet — a rare kind of discipline.
+                {items.length
+                  ? "Those saved items are no longer listed."
+                  : "Nothing saved yet — a rare kind of discipline."}
               </p>
               <Link to="/shop" data-testid="wishlist-empty-cta" className="btn-ghost mt-10">
                 Browse the edit <ArrowRight size={14} strokeWidth={1.5} />

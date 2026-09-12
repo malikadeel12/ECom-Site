@@ -6,10 +6,10 @@
  */
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowUpRight, Heart, Minus, Plus, Truck, RotateCcw, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Heart, Truck, RotateCcw, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
-import { fetchProduct, fetchRelated, fetchProducts, formatPrice } from "../lib/api";
+import { fetchProduct, fetchRelated, fetchCatalogProducts, formatPrice } from "../lib/api";
 import { buildProductGallery, getProductImages } from "../lib/productMedia";
 import { SITE_NAME } from "../lib/brand";
 import { ProductCard } from "../components/ProductCard";
@@ -33,14 +33,10 @@ export default function ProductDetail() {
   const [loaded, setLoaded] = useState(false);
   const [related, setRelated] = useState([]);
   const [recent, setRecent] = useState([]);
-  const [qty, setQty] = useState(1);
-  const [variant, setVariant] = useState(0);
   const { toggle, has } = useWishlist();
 
   useEffect(() => {
     setLoaded(false);
-    setQty(1);
-    setVariant(0);
     fetchProduct(slug)
       .then((next) => setProduct(next))
       .catch(() => setProduct(null))
@@ -50,7 +46,7 @@ export default function ProductDetail() {
       const seen = JSON.parse(localStorage.getItem("bysmart_recent") || localStorage.getItem("vara_recent")) || [];
       const others = seen.filter((s) => s !== slug).slice(0, 3);
       if (others.length) {
-        fetchProducts().then((all) => setRecent(all.filter((p) => others.includes(p.slug))));
+        fetchCatalogProducts().then((all) => setRecent(all.filter((p) => others.includes(p.slug))));
       } else {
         setRecent([]);
       }
@@ -71,7 +67,6 @@ export default function ProductDetail() {
     );
   }
 
-  const variants = ["Signature", "Noir", "Sand"];
   const saved = has(product.slug);
 
   const specs = product.specs || [];
@@ -79,7 +74,7 @@ export default function ProductDetail() {
   const tagline = product.tagline || "";
   const collection = product.collection || "";
   const category = product.category || "";
-  const description = "A selected product available from an external seller. Visit the marketplace listing for current product details before making a purchase.";
+  const description = product.description || "A selected product available from an external seller. Visit the marketplace listing for current product details before making a purchase.";
   const price = product.price || 0;
   const affiliateUrl = product.affiliate_url || "#";
   const images = getProductImages(product);
@@ -99,12 +94,12 @@ export default function ProductDetail() {
       <div className="mx-auto max-w-[1500px] px-6 md:px-12">
         <nav className="py-6 text-[0.62rem] uppercase tracking-[0.24em] text-[#7A8164]" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-[#121212]">Home</Link> <span className="mx-2">/</span>
-          <Link to={`/shop?category=${category}`} className="hover:text-[#121212]">{category}</Link> <span className="mx-2">/</span>
+          <Link to={`/shop?category=${encodeURIComponent(category)}`} className="hover:text-[#121212]">{category}</Link> <span className="mx-2">/</span>
           <span className="text-[#121212]">{product.name}</span>
         </nav>
 
         <div className="grid gap-12 pb-24 lg:grid-cols-12 lg:gap-16">
-          <ProductMediaGallery product={product} gallery={gallery} />
+          <ProductMediaGallery key={product.slug} product={product} gallery={gallery} />
 
           {/* STICKY INFO */}
           <div className="lg:col-span-5">
@@ -125,36 +120,7 @@ export default function ProductDetail() {
                   {description}
                 </p>
 
-                <div className="mt-9">
-                  <p className="text-[0.62rem] uppercase tracking-[0.24em] font-semibold text-[#1C1C1C]">
-                    Finish — <span className="text-[#7A8164]">{variants[variant]}</span>
-                  </p>
-                  <div className="mt-4 flex gap-3">
-                    {variants.map((v, i) => (
-                      <button
-                        key={v}
-                        data-testid={`variant-option-${v.toLowerCase()}`}
-                        onClick={() => setVariant(i)}
-                        className={`px-5 py-2.5 text-[0.65rem] uppercase tracking-[0.18em] border transition-colors duration-300 ${
-                          variant === i ? "border-[#121212] bg-[#121212] text-[#F8F6F2]" : "border-[#DAD8D2] text-[#1C1C1C] hover:border-[#121212]"
-                        }`}
-                      >
-                        {v}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
                 <div className="mt-9 flex items-stretch gap-4">
-                  <div className="flex items-center border border-[#DAD8D2]">
-                    <button data-testid="qty-decrease" aria-label="Decrease quantity" onClick={() => setQty(Math.max(1, qty - 1))} className="px-4 py-3 transition-colors duration-300 hover:bg-[#F5F2EC]">
-                      <Minus size={13} strokeWidth={1.5} />
-                    </button>
-                    <span data-testid="qty-value" className="w-8 text-center text-sm">{qty}</span>
-                    <button data-testid="qty-increase" aria-label="Increase quantity" onClick={() => setQty(qty + 1)} className="px-4 py-3 transition-colors duration-300 hover:bg-[#F5F2EC]">
-                      <Plus size={13} strokeWidth={1.5} />
-                    </button>
-                  </div>
                   <MagneticButton data-testid="acquire-button" onClick={onAcquire} className="btn-primary flex-1">
                   Visit seller <ArrowUpRight size={14} strokeWidth={1.5} />
                   </MagneticButton>
@@ -181,31 +147,37 @@ export default function ProductDetail() {
                   ))}
                 </div>
 
-                <Accordion type="single" collapsible className="mt-9">
-                  <AccordionItem value="specs" className="border-[#DAD8D2]">
-                    <AccordionTrigger data-testid="specs-accordion" className="text-[0.68rem] uppercase tracking-[0.22em] font-semibold hover:no-underline">
-                      Specifications
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <dl className="space-y-3">
-                        {specs.map((s) => (
-                          <div key={s.label} className="flex justify-between text-sm font-light">
-                            <dt className="text-[#7A8164]">{s.label}</dt>
-                            <dd className="text-[#1C1C1C]">{s.value}</dd>
-                          </div>
-                        ))}
-                      </dl>
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="materials" className="border-[#DAD8D2]">
-                    <AccordionTrigger className="text-[0.68rem] uppercase tracking-[0.22em] font-semibold hover:no-underline">
-                      Materials
-                    </AccordionTrigger>
-                    <AccordionContent className="text-sm font-light leading-relaxed text-[#1C1C1C]/80">
-                      {materials}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                {(specs.length > 0 || materials) && (
+                  <Accordion type="single" collapsible className="mt-9">
+                    {specs.length > 0 && (
+                      <AccordionItem value="specs" className="border-[#DAD8D2]">
+                        <AccordionTrigger data-testid="specs-accordion" className="text-[0.68rem] uppercase tracking-[0.22em] font-semibold hover:no-underline">
+                          Specifications
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <dl className="space-y-3">
+                            {specs.map((s) => (
+                              <div key={s.label} className="flex justify-between text-sm font-light">
+                                <dt className="text-[#7A8164]">{s.label}</dt>
+                                <dd className="text-[#1C1C1C]">{s.value}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        </AccordionContent>
+                      </AccordionItem>
+                    )}
+                    {materials && (
+                      <AccordionItem value="materials" className="border-[#DAD8D2]">
+                        <AccordionTrigger className="text-[0.68rem] uppercase tracking-[0.22em] font-semibold hover:no-underline">
+                          Materials
+                        </AccordionTrigger>
+                        <AccordionContent className="text-sm font-light leading-relaxed text-[#1C1C1C]/80">
+                          {materials}
+                        </AccordionContent>
+                      </AccordionItem>
+                    )}
+                  </Accordion>
+                )}
               </Reveal>
             </div>
           </div>
@@ -221,7 +193,7 @@ export default function ProductDetail() {
               About the {product.name}
             </h2>
             <p className="mt-7 max-w-lg text-base font-light leading-relaxed text-[#1C1C1C]/80">
-              Product details are provided for discovery purposes. Visit the external seller for the latest specifications, price, availability, shipping, returns, and warranty information.
+              {description}
             </p>
           </Reveal>
           <Reveal delay={0.15} className="img-hover-zoom aspect-[4/3] lg:ml-12">

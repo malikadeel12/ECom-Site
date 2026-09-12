@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 import Lenis from "lenis";
 import { Toaster } from "sonner";
 import { WishlistProvider } from "./context/WishlistContext";
@@ -51,6 +51,15 @@ function App() {
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/admin" element={<AdminLogin />} />
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route
+                  path="*"
+                  element={
+                    <div className="flex min-h-[70vh] flex-col items-center justify-center gap-6 px-6 pt-[76px] text-center">
+                      <p className="font-serif-display text-4xl font-light">This page does not exist.</p>
+                      <Link to="/" className="btn-primary">Back home</Link>
+                    </div>
+                  }
+                />
               </Routes>
             </main>
             <Footer />

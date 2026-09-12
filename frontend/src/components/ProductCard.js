@@ -83,7 +83,9 @@ export const ProductCard = ({ product, index = 0, tall = false }) => {
             {product.collection} · {product.category}
           </p>
           <h3 className="font-serif-display mt-1.5 text-xl font-medium leading-snug text-[#121212]">
-            {product.name}
+            <Link to={`/product/${product.slug}`} className="hover:opacity-70">
+              {product.name}
+            </Link>
           </h3>
         </div>
         <div className="text-right shrink-0">

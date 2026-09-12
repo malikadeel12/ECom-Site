@@ -12,6 +12,19 @@ import { HOME_SHOWCASE_PRODUCTS } from "./homeShowcase";
 
 export const fetchProducts = (params = {}) => fetchProductsFromFirestore(params);
 
+// Search, wishlist, and recently viewed need both live products and homepage samples.
+export const fetchCatalogProducts = async () => {
+  let fromDb = [];
+  try {
+    const data = await fetchProductsFromFirestore();
+    fromDb = Array.isArray(data) ? data : [];
+  } catch {
+    fromDb = [];
+  }
+  const slugs = new Set(fromDb.map((item) => item.slug));
+  return [...fromDb, ...HOME_SHOWCASE_PRODUCTS.filter((item) => !slugs.has(item.slug))];
+};
+
 // Firestore first; homepage samples fill in when a slug is only on the landing page.
 export const fetchProduct = async (slug) => {
   try {
